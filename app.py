@@ -95,6 +95,10 @@ st.markdown(
         background: #dc2626;
         color: white;
     }
+
+    div[data-testid="column"] {
+        padding-bottom: 12px;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -224,9 +228,29 @@ if st.button("Run MenuTaste Agent", type="primary"):
 
     with tab2:
         st.subheader("Nutrition Estimate")
-        nutrition_df = pd.DataFrame([report.nutrition.model_dump()]).T.reset_index()
-        nutrition_df.columns = ["Signal", "Level"]
-        st.dataframe(nutrition_df, use_container_width=True)
+
+        nutrition_items = {
+            "Protein": report.nutrition.protein_level,
+            "Carbohydrates": report.nutrition.carbohydrate_level,
+            "Fat": report.nutrition.fat_level,
+            "Vitamin/mineral signal": report.nutrition.vitamin_mineral_signal,
+            "Fiber signal": report.nutrition.fiber_signal,
+            "Sugar risk": report.nutrition.sugar_risk,
+            "Salt risk": report.nutrition.salt_risk,
+        }
+
+        n_cols = st.columns(4)
+        for idx, (label, value) in enumerate(nutrition_items.items()):
+            with n_cols[idx % 4]:
+                st.markdown(
+                    f"""
+                    <div class="score-card">
+                        <div class="score-label">{label}</div>
+                        <div class="score-value" style="font-size:24px;">{value}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 
         st.subheader("Risks")
         st.write("Allergens:", ", ".join(report.risks.allergen_risks))
@@ -235,10 +259,17 @@ if st.button("Run MenuTaste Agent", type="primary"):
         st.write("Operational risks:", ", ".join(report.risks.operational_risks))
 
         st.subheader("Ingredient Notes")
-        notes_df = pd.DataFrame(
-            [{"Ingredient": k, "Note": v} for k, v in report.ingredient_notes.items()]
-        )
-        st.dataframe(notes_df, use_container_width=True)
+
+        for ingredient, note in report.ingredient_notes.items():
+            st.markdown(
+                f"""
+                <div class="section-box">
+                    <b>{ingredient.title()}</b><br>
+                    <span style="color:#4b5563;">{note}</span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
     
     with tab3:
         st.subheader("AI Reasoning")
