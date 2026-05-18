@@ -157,7 +157,7 @@ st.markdown(
     }
 
     section[data-testid="stSidebar"] * {
-        font-size: clamp(13px, 0.9vw, 15px);
+        font-size: clamp(14px, 0.9vw, 18px);
         color: var(--text-main);
     }
 
@@ -187,7 +187,7 @@ st.markdown(
     }
 
     p, li, label, span, div {
-        font-size: clamp(14px, 1vw, 16px);
+        font-size: clamp(14px, 1vw, 18px);
         line-height: 1.6;
     }
 
@@ -203,13 +203,13 @@ st.markdown(
 
     label,
     [data-testid="stWidgetLabel"] p {
-        font-size: clamp(13px, 0.95vw, 15px) !important;
+        font-size: clamp(14px, 0.95vw, 18px) !important;
         font-weight: 750 !important;
         color: #1f2937 !important;
     }
 
     input, textarea, select {
-        font-size: clamp(14px, 1vw, 16px) !important;
+        font-size: clamp(14px, 1vw, 18px) !important;
     }
 
     .hero-box {
@@ -223,7 +223,7 @@ st.markdown(
     }
 
     .hero-title {
-        font-size: clamp(32px, 4vw, 46px);
+        font-size: clamp(32px, 4vw, 50px);
         font-weight: 900;
         color: #0b1220;
         margin-bottom: 14px;
@@ -252,7 +252,7 @@ st.markdown(
         background: rgba(255, 255, 255, 0.9);
         border: 1px solid #dbe4ef;
         color: #233247;
-        font-size: clamp(12px, 0.9vw, 14px);
+        font-size: clamp(14px, 0.9vw, 18px);
         font-weight: 800;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
         white-space: nowrap;
@@ -286,7 +286,7 @@ st.markdown(
     }
 
     .score-label {
-        font-size: clamp(11px, 0.8vw, 13px);
+        font-size: clamp(12px, 0.8vw, 15px);
         color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.09em;
@@ -303,8 +303,8 @@ st.markdown(
     }
 
     .score-tone {
-        margin-top: 8px;
-        font-size: clamp(12px, 0.9vw, 14px);
+        margin-top: 10px;
+        font-size: clamp(14px, 0.9vw, 18px);
         color: #475569;
         font-weight: 800;
     }
@@ -394,7 +394,7 @@ st.markdown(
     }
 
     .stTabs [data-baseweb="tab"] {
-        font-size: clamp(13px, 1vw, 16px);
+        font-size: clamp(14px, 1vw, 18px);
         font-weight: 750;
         padding: 12px 10px;
         white-space: nowrap;
