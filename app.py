@@ -128,23 +128,37 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
+    :root {
+        --page-bg: #f3f7f2;
+        --sidebar-bg: #e4eef8;
+        --text-main: #102033;
+        --text-soft: #334155;
+        --card-border: #d8e2ee;
+        --card-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+    }
+
     html, body, [class*="css"] {
         font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
     .stApp {
-        background: #f3f7f2;
-        color: #102033;
+        background: var(--page-bg);
+        color: var(--text-main);
+        overflow-x: hidden;
+    }
+
+    header[data-testid="stHeader"] {
+        background: rgba(243, 247, 242, 0.96);
     }
 
     section[data-testid="stSidebar"] {
-        background: #e4eef8;
+        background: var(--sidebar-bg);
         border-right: 1px solid #c7d8ea;
     }
 
     section[data-testid="stSidebar"] * {
-        font-size: 15px;
-        color: #102033;
+        font-size: clamp(13px, 0.9vw, 15px);
+        color: var(--text-main);
     }
 
     section[data-testid="stSidebar"] h1,
@@ -155,11 +169,16 @@ st.markdown(
     }
 
     .block-container {
-        padding-top: 4.8rem !important;
+        padding-top: clamp(2.5rem, 5vw, 4.8rem) !important;
         padding-bottom: 3.2rem;
-        max-width: 1520px;
+        max-width: min(1520px, 92vw);
         margin-left: auto;
         margin-right: auto;
+        overflow-x: hidden;
+    }
+
+    .main .block-container {
+        overflow-x: hidden;
     }
 
     h1, h2, h3 {
@@ -168,7 +187,7 @@ st.markdown(
     }
 
     p, li, label, span, div {
-        font-size: 16px;
+        font-size: clamp(14px, 1vw, 16px);
         line-height: 1.6;
     }
 
@@ -179,31 +198,32 @@ st.markdown(
     .stTextArea,
     .stNumberInput,
     .stSelectbox {
-        color: #102033 !important;
+        color: var(--text-main) !important;
     }
 
     label,
     [data-testid="stWidgetLabel"] p {
-        font-size: 15px !important;
-        font-weight: 700 !important;
+        font-size: clamp(13px, 0.95vw, 15px) !important;
+        font-weight: 750 !important;
         color: #1f2937 !important;
     }
 
     input, textarea, select {
-        font-size: 16px !important;
+        font-size: clamp(14px, 1vw, 16px) !important;
     }
 
     .hero-box {
-        padding: 34px 40px;
+        padding: clamp(26px, 3.2vw, 40px);
         border-radius: 28px;
         background: linear-gradient(135deg, #fff7ed 0%, #eefdf4 55%, #e8f4ff 100%);
         border: 1px solid #fdba74;
         margin-bottom: 24px;
         box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+        overflow: hidden;
     }
 
     .hero-title {
-        font-size: 46px;
+        font-size: clamp(32px, 4vw, 46px);
         font-weight: 900;
         color: #0b1220;
         margin-bottom: 14px;
@@ -212,7 +232,7 @@ st.markdown(
     }
 
     .hero-subtitle {
-        font-size: 18px;
+        font-size: clamp(15px, 1.35vw, 18px);
         color: #243447;
         max-width: 1080px;
         line-height: 1.65;
@@ -232,40 +252,41 @@ st.markdown(
         background: rgba(255, 255, 255, 0.9);
         border: 1px solid #dbe4ef;
         color: #233247;
-        font-size: 14px;
+        font-size: clamp(12px, 0.9vw, 14px);
         font-weight: 800;
         box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+        white-space: nowrap;
     }
 
     .workflow-card {
-        padding: 22px 22px;
+        padding: clamp(18px, 1.6vw, 22px);
         border-radius: 20px;
         background: #ffffff;
         border: 1px solid #d9e2ec;
-        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+        box-shadow: var(--card-shadow);
         min-height: 112px;
         color: #1e293b;
         line-height: 1.55;
-        font-size: 16px;
+        font-size: clamp(14px, 1vw, 16px);
     }
 
     .workflow-card b {
         color: #0f172a;
-        font-size: 17px;
+        font-size: clamp(15px, 1.05vw, 17px);
         font-weight: 850;
     }
 
     .score-card {
-        padding: 24px;
+        padding: clamp(18px, 1.7vw, 24px);
         border-radius: 22px;
         background: #ffffff;
-        border: 1px solid #d8e2ee;
+        border: 1px solid var(--card-border);
         box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
-        min-height: 128px;
+        min-height: 126px;
     }
 
     .score-label {
-        font-size: 13px;
+        font-size: clamp(11px, 0.8vw, 13px);
         color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.09em;
@@ -274,7 +295,7 @@ st.markdown(
     }
 
     .score-value {
-        font-size: 39px;
+        font-size: clamp(28px, 3vw, 39px);
         font-weight: 900;
         color: #020617;
         letter-spacing: -0.055em;
@@ -283,58 +304,59 @@ st.markdown(
 
     .score-tone {
         margin-top: 8px;
-        font-size: 14px;
+        font-size: clamp(12px, 0.9vw, 14px);
         color: #475569;
         font-weight: 800;
     }
 
     .mini-card {
-        padding: 22px 24px;
+        padding: clamp(18px, 1.6vw, 22px) clamp(18px, 1.7vw, 24px);
         border-radius: 20px;
         background: #ffffff;
-        border: 1px solid #d8e2ee;
+        border: 1px solid var(--card-border);
         box-shadow: 0 7px 18px rgba(15, 23, 42, 0.06);
         min-height: 108px;
     }
 
     .mini-value {
-        font-size: 27px;
+        font-size: clamp(20px, 2vw, 27px);
         font-weight: 900;
         color: #0f172a;
         line-height: 1.2;
+        overflow-wrap: anywhere;
     }
 
     .section-box {
-        padding: 22px 26px;
+        padding: clamp(18px, 1.7vw, 22px) clamp(20px, 2vw, 26px);
         border-radius: 20px;
         background: #ffffff;
-        border: 1px solid #d8e2ee;
+        border: 1px solid var(--card-border);
         margin: 12px 0;
         color: #243447;
         box-shadow: 0 5px 16px rgba(15, 23, 42, 0.05);
         line-height: 1.65;
-        font-size: 16px;
+        font-size: clamp(14px, 1vw, 16px);
     }
 
     .section-box b {
         color: #0f172a;
-        font-size: 17px;
+        font-size: clamp(15px, 1.05vw, 17px);
     }
 
     .risk-box {
-        padding: 18px 22px;
+        padding: clamp(16px, 1.5vw, 18px) clamp(18px, 1.7vw, 22px);
         border-radius: 18px;
         background: #fff7ed;
         border: 1px solid #fdba74;
         margin-bottom: 12px;
         color: #263445;
-        font-size: 16px;
+        font-size: clamp(14px, 1vw, 16px);
         line-height: 1.6;
     }
 
     .risk-box b {
         color: #9a3412;
-        font-size: 17px;
+        font-size: clamp(15px, 1.05vw, 17px);
     }
 
     .success-box {
@@ -343,7 +365,7 @@ st.markdown(
         background: #dcfce7;
         border: 1px solid #86efac;
         color: #166534;
-        font-size: 17px;
+        font-size: clamp(15px, 1.05vw, 17px);
         font-weight: 850;
         margin: 18px 0 22px 0;
     }
@@ -354,7 +376,7 @@ st.markdown(
         border-radius: 16px;
         padding: 0.9rem 1.35rem;
         border: none;
-        font-size: 16px;
+        font-size: clamp(14px, 1vw, 16px);
         font-weight: 850;
         box-shadow: 0 10px 22px rgba(239, 68, 68, 0.28);
     }
@@ -368,12 +390,14 @@ st.markdown(
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
         border-bottom: 1px solid #cbd5e1;
+        overflow-x: auto;
     }
 
     .stTabs [data-baseweb="tab"] {
-        font-size: 16px;
+        font-size: clamp(13px, 1vw, 16px);
         font-weight: 750;
         padding: 12px 10px;
+        white-space: nowrap;
     }
 
     div[data-testid="stTextInput"] input,
@@ -394,8 +418,22 @@ st.markdown(
         margin: 2.0rem 0;
     }
 
-    header[data-testid="stHeader"] {
-        background: rgba(243, 247, 242, 0.96);
+    @media (max-width: 900px) {
+        .hero-box {
+            padding: 28px 24px;
+        }
+
+        .workflow-card,
+        .score-card,
+        .mini-card,
+        .section-box {
+            padding: 18px;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 6px 10px;
+        }
     }
     </style>
     """,
