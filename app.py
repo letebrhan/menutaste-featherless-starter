@@ -134,12 +134,12 @@ st.markdown(
 
     .stApp {
         background: #f3f7f2;
-        color: #0f172a;
+        color: #102033;
     }
 
     section[data-testid="stSidebar"] {
-        background: #e6eef7;
-        border-right: 1px solid #cbd8e6;
+        background: #e4eef8;
+        border-right: 1px solid #c7d8ea;
     }
 
     section[data-testid="stSidebar"] * {
@@ -155,9 +155,11 @@ st.markdown(
     }
 
     .block-container {
-        padding-top: 2.2rem;
+        padding-top: 4.8rem !important;
         padding-bottom: 3.2rem;
-        max-width: 1480px;
+        max-width: 1520px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     h1, h2, h3 {
@@ -167,7 +169,17 @@ st.markdown(
 
     p, li, label, span, div {
         font-size: 16px;
-        line-height: 1.55;
+        line-height: 1.6;
+    }
+
+    [data-testid="stMarkdownContainer"],
+    [data-testid="stCaptionContainer"],
+    .stTabs,
+    .stTextInput,
+    .stTextArea,
+    .stNumberInput,
+    .stSelectbox {
+        color: #102033 !important;
     }
 
     label,
@@ -182,7 +194,7 @@ st.markdown(
     }
 
     .hero-box {
-        padding: 42px 44px;
+        padding: 34px 40px;
         border-radius: 28px;
         background: linear-gradient(135deg, #fff7ed 0%, #eefdf4 55%, #e8f4ff 100%);
         border: 1px solid #fdba74;
@@ -191,7 +203,7 @@ st.markdown(
     }
 
     .hero-title {
-        font-size: 52px;
+        font-size: 46px;
         font-weight: 900;
         color: #0b1220;
         margin-bottom: 14px;
@@ -200,7 +212,7 @@ st.markdown(
     }
 
     .hero-subtitle {
-        font-size: 19px;
+        font-size: 18px;
         color: #243447;
         max-width: 1080px;
         line-height: 1.65;
@@ -231,7 +243,7 @@ st.markdown(
         background: #ffffff;
         border: 1px solid #d9e2ec;
         box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
-        min-height: 118px;
+        min-height: 112px;
         color: #1e293b;
         line-height: 1.55;
         font-size: 16px;
@@ -379,7 +391,11 @@ st.markdown(
 
     hr {
         border-color: #cbd5e1;
-        margin: 2.2rem 0;
+        margin: 2.0rem 0;
+    }
+
+    header[data-testid="stHeader"] {
+        background: rgba(243, 247, 242, 0.96);
     }
     </style>
     """,
