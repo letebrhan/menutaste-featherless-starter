@@ -400,6 +400,97 @@ st.markdown(
         white-space: nowrap;
     }
 
+
+    /* Responsive captions */
+    [data-testid="stCaptionContainer"],
+    [data-testid="stCaptionContainer"] p {
+        font-size: clamp(14px, 1vw, 17px) !important;
+        color: #475569 !important;
+        line-height: 1.65 !important;
+        font-weight: 500 !important;
+    }
+
+    /* Responsive tab text and wrapping */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: clamp(6px, 1vw, 14px) !important;
+        border-bottom: 1px solid #cbd5e1 !important;
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        padding-bottom: 2px !important;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        font-size: clamp(14px, 0.95vw, 17px) !important;
+        font-weight: 800 !important;
+        color: #334155 !important;
+        padding: clamp(9px, 1vw, 14px) clamp(8px, 0.9vw, 12px) !important;
+        white-space: nowrap !important;
+        min-width: fit-content !important;
+    }
+
+    .stTabs [data-baseweb="tab"] p {
+        font-size: clamp(14px, 0.95vw, 17px) !important;
+        font-weight: 800 !important;
+        margin: 0 !important;
+        line-height: 1.35 !important;
+    }
+
+    .stTabs [aria-selected="true"] {
+        color: #ef4444 !important;
+        border-bottom: 3px solid #ef4444 !important;
+    }
+
+    /* Responsive markdown/report text inside tabs */
+    [data-testid="stMarkdownContainer"] p,
+    [data-testid="stMarkdownContainer"] li {
+        font-size: clamp(15px, 1vw, 17px) !important;
+        line-height: 1.75 !important;
+    }
+
+    [data-testid="stMarkdownContainer"] h1 {
+        font-size: clamp(28px, 3vw, 36px) !important;
+        line-height: 1.2 !important;
+    }
+
+    [data-testid="stMarkdownContainer"] h2 {
+        font-size: clamp(24px, 2.4vw, 30px) !important;
+        line-height: 1.25 !important;
+    }
+
+    [data-testid="stMarkdownContainer"] h3 {
+        font-size: clamp(21px, 2vw, 25px) !important;
+        line-height: 1.3 !important;
+    }
+
+    @media (max-width: 720px) {
+        .block-container {
+            max-width: 96vw !important;
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+        }
+
+        .hero-title {
+            letter-spacing: -0.035em;
+        }
+
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 4px !important;
+        }
+
+        .stTabs [data-baseweb="tab"] {
+            padding: 9px 8px !important;
+        }
+
+        .score-card,
+        .mini-card,
+        .workflow-card,
+        .section-box,
+        .risk-box {
+            border-radius: 16px !important;
+        }
+    }
+
+
     div[data-testid="stTextInput"] input,
     div[data-testid="stNumberInput"] input,
     div[data-testid="stTextArea"] textarea,
