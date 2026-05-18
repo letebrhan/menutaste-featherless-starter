@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-import pandas as pd
+import os
+
 import streamlit as st
 from dotenv import load_dotenv
+from pydantic import ValidationError
 
 from src.menutaste.agent import run_menutaste_agent
 from src.menutaste.config import APP_SUBTITLE, APP_TITLE, BUSINESS_TYPES, CUSTOMER_SEGMENTS, DIETARY_FOCUS
@@ -15,80 +17,279 @@ load_dotenv()
 
 st.set_page_config(page_title="MenuTaste AI Agent", page_icon="🍽️", layout="wide")
 
+DEMO_SCENARIOS = {
+    "Ethiopian breakfast bowl": {
+        "product_name": "Ethiopian chickpea breakfast bowl",
+        "description": "A warm breakfast bowl with chickpeas, tomato, spinach, olive oil, lemon, and spices.",
+        "ingredients": "chickpeas, tomato, spinach, olive oil, lemon, salt",
+        "business_type": "Cafe",
+        "location": "Milan, Italy",
+        "customer_segment": "Office workers",
+        "dietary_focus": "Low sugar",
+        "target_price": 8.5,
+        "complexity": "High",
+    },
+    "Vegan protein smoothie": {
+        "product_name": "Green vegan protein smoothie",
+        "description": "A ready-to-go smoothie for gym customers and busy office workers.",
+        "ingredients": "banana, spinach, almond milk, peanut butter, oats, chia seeds",
+        "business_type": "Juice or drink bar",
+        "location": "Milan, Italy",
+        "customer_segment": "Fitness-focused customers",
+        "dietary_focus": "Vegan",
+        "target_price": 6.5,
+        "complexity": "Low",
+    },
+    "Premium focaccia": {
+        "product_name": "Premium tomato and olive focaccia",
+        "description": "A premium bakery item for lunch and aperitivo customers.",
+        "ingredients": "wheat flour, olive oil, tomato, cheese, salt, herbs",
+        "business_type": "Bakery",
+        "location": "Milan, Italy",
+        "customer_segment": "Premium food lovers",
+        "dietary_focus": "None",
+        "target_price": 5.5,
+        "complexity": "Medium",
+    },
+    "Healthy coffee drink": {
+        "product_name": "Low-sugar oat coffee shake",
+        "description": "A cold coffee drink positioned as a lighter alternative to sweet coffee beverages.",
+        "ingredients": "coffee, oat milk, banana, cocoa, cinnamon",
+        "business_type": "Cafe",
+        "location": "Milan, Italy",
+        "customer_segment": "Office workers",
+        "dietary_focus": "Low sugar",
+        "target_price": 4.8,
+        "complexity": "Low",
+    },
+}
+
+
+def option_index(options: list[str], value: str) -> int:
+    return options.index(value) if value in options else 0
+
+
+def score_tone(value: int) -> str:
+    if value >= 80:
+        return "Strong"
+    if value >= 65:
+        return "Ready to test"
+    return "Needs work"
+
+
+def render_score_card(label: str, value: int) -> None:
+    tone = score_tone(value)
+    st.markdown(
+        f"""
+        <div class="score-card">
+            <div class="score-label">{label}</div>
+            <div class="score-value">{value}/100</div>
+            <div class="score-tone">{tone}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_small_card(label: str, value: str) -> None:
+    st.markdown(
+        f"""
+        <div class="mini-card">
+            <div class="score-label">{label}</div>
+            <div class="mini-value">{value}</div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def render_info_card(title: str, body: str) -> None:
+    st.markdown(
+        f"""
+        <div class="section-box">
+            <b>{title}</b><br>
+            <span>{body}</span>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+
+def featherless_status() -> str:
+    if os.getenv("USE_FEATHERLESS", "true").lower() not in {"1", "true", "yes"}:
+        return "Disabled"
+    if not os.getenv("FEATHERLESS_API_KEY"):
+        return "Missing API key"
+    return "Connected"
+
+
 st.markdown(
     """
     <style>
-    .main {
-        background: #fbfbfd;
+    .stApp {
+        background: #f8fafc;
+    }
+
+    section[data-testid="stSidebar"] {
+        background: #eef2f7;
+        border-right: 1px solid #dbe3ee;
+    }
+
+    .block-container {
+        padding-top: 2.2rem;
+        padding-bottom: 3rem;
+        max-width: 1500px;
     }
 
     .hero-box {
-        padding: 28px 32px;
-        border-radius: 22px;
-        background: linear-gradient(135deg, #fff7ed 0%, #ecfdf5 100%);
-        border: 1px solid #fde7c7;
-        margin-bottom: 24px;
+        padding: 34px 36px;
+        border-radius: 26px;
+        background: linear-gradient(135deg, #fff7ed 0%, #ecfdf5 55%, #eef6ff 100%);
+        border: 1px solid #fed7aa;
+        margin-bottom: 22px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
     }
 
     .hero-title {
         font-size: 44px;
-        font-weight: 800;
-        color: #172033;
-        margin-bottom: 8px;
+        font-weight: 850;
+        color: #111827;
+        margin-bottom: 10px;
+        letter-spacing: -0.04em;
     }
 
     .hero-subtitle {
         font-size: 18px;
-        color: #4b5563;
-        max-width: 900px;
-        line-height: 1.5;
+        color: #334155;
+        max-width: 980px;
+        line-height: 1.55;
+    }
+
+    .badge-row {
+        margin-top: 18px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .badge {
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.8);
+        border: 1px solid #e2e8f0;
+        color: #334155;
+        font-size: 13px;
+        font-weight: 700;
     }
 
     .workflow-card {
-        padding: 16px 18px;
-        border-radius: 16px;
-        background: white;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
-        height: 100%;
-    }
-
-    .score-card {
-        padding: 18px;
+        padding: 18px 18px;
         border-radius: 18px;
         background: white;
         border: 1px solid #e5e7eb;
-        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+        box-shadow: 0 5px 16px rgba(15, 23, 42, 0.06);
+        height: 100%;
+        color: #1f2937;
+        line-height: 1.45;
+    }
+
+    .workflow-card b {
+        color: #111827;
+    }
+
+    .form-card {
+        padding: 18px 20px 4px 20px;
+        border-radius: 22px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
+        margin-top: 12px;
+    }
+
+    .score-card {
+        padding: 20px;
+        border-radius: 20px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 7px 18px rgba(15, 23, 42, 0.07);
+        min-height: 112px;
     }
 
     .score-label {
-        font-size: 13px;
-        color: #6b7280;
+        font-size: 12px;
+        color: #64748b;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.08em;
+        font-weight: 800;
+        margin-bottom: 8px;
     }
 
     .score-value {
         font-size: 34px;
-        font-weight: 800;
-        color: #111827;
+        font-weight: 850;
+        color: #020617;
+        letter-spacing: -0.04em;
     }
 
-    .section-box {
-        padding: 20px 24px;
+    .score-tone {
+        margin-top: 6px;
+        font-size: 13px;
+        color: #475569;
+        font-weight: 700;
+    }
+
+    .mini-card {
+        padding: 18px 20px;
         border-radius: 18px;
         background: white;
         border: 1px solid #e5e7eb;
-        margin-top: 10px;
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+        min-height: 96px;
+    }
+
+    .mini-value {
+        font-size: 23px;
+        font-weight: 800;
+        color: #020617;
+    }
+
+    .section-box {
+        padding: 18px 22px;
+        border-radius: 18px;
+        background: white;
+        border: 1px solid #e5e7eb;
+        margin: 10px 0;
+        color: #334155;
+        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+        line-height: 1.55;
+    }
+
+    .risk-box {
+        padding: 16px 20px;
+        border-radius: 16px;
+        background: #fff7ed;
+        border: 1px solid #fed7aa;
+        margin-bottom: 10px;
+    }
+
+    .success-box {
+        padding: 16px 20px;
+        border-radius: 16px;
+        background: #ecfdf5;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+        font-weight: 700;
+        margin: 14px 0 18px 0;
     }
 
     div.stButton > button:first-child {
         background: #ef4444;
         color: white;
-        border-radius: 12px;
-        padding: 0.65rem 1.2rem;
+        border-radius: 14px;
+        padding: 0.75rem 1.25rem;
         border: none;
-        font-weight: 700;
+        font-weight: 800;
+        box-shadow: 0 8px 16px rgba(239, 68, 68, 0.25);
     }
 
     div.stButton > button:first-child:hover {
@@ -104,13 +305,44 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+with st.sidebar:
+    st.header("🍽️ MenuTaste")
+    st.write("AI product analyst for food entrepreneurs.")
+
+    selected_demo = st.selectbox("Choose a demo scenario", list(DEMO_SCENARIOS.keys()))
+    demo = DEMO_SCENARIOS[selected_demo]
+
+    st.markdown("### Agent status")
+    status = featherless_status()
+    if status == "Connected":
+        st.success("Featherless connected")
+    elif status == "Disabled":
+        st.warning("Featherless disabled")
+    else:
+        st.warning("Featherless key missing")
+
+    st.markdown("### Agent stack")
+    st.write("- Streamlit web app")
+    st.write("- Local scoring engine")
+    st.write("- Featherless AI reasoning")
+    st.write("- Markdown/JSON export")
+
+    st.info("Demo tip: show Summary, Nutrition & Risks, Featherless Reasoning, and Export.")
+
 st.markdown(
     f"""
     <div class="hero-box">
         <div class="hero-title">🍽️ {APP_TITLE}</div>
         <div class="hero-subtitle">
-            {APP_SUBTITLE}. MenuTaste helps food entrepreneurs evaluate food and drink ideas using
-            ingredient analysis, nutrition signals, risk checks, business scoring, and Featherless AI reasoning.
+            {APP_SUBTITLE}. MenuTaste turns a food or drink idea into a clear product-quality,
+            nutrition, risk, market-fit, and launch-readiness report for small food businesses.
+        </div>
+        <div class="badge-row">
+            <span class="badge">Featherless AI</span>
+            <span class="badge">Food product analysis</span>
+            <span class="badge">Risk detection</span>
+            <span class="badge">Launch checklist</span>
+            <span class="badge">Markdown and JSON export</span>
         </div>
     </div>
     """,
@@ -119,77 +351,71 @@ st.markdown(
 
 wf1, wf2, wf3, wf4 = st.columns(4)
 with wf1:
-    st.markdown('<div class="workflow-card"><b>1. Product Input</b><br>Describe the food idea, ingredients, target customer, price, and location.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="workflow-card"><b>1. Product Input</b><br>Collect product, ingredients, target customer, price, location, and dietary goal.</div>', unsafe_allow_html=True)
 with wf2:
     st.markdown('<div class="workflow-card"><b>2. Local Analysis</b><br>Estimate nutrition signals, allergens, dietary conflicts, and operational risks.</div>', unsafe_allow_html=True)
 with wf3:
-    st.markdown('<div class="workflow-card"><b>3. Featherless Reasoning</b><br>Send a structured prompt to an open-source model for business-ready advice.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="workflow-card"><b>3. Featherless Reasoning</b><br>Send a structured prompt to an open-source model for product strategy.</div>', unsafe_allow_html=True)
 with wf4:
-    st.markdown('<div class="workflow-card"><b>4. Launch Report</b><br>Generate scores, recommendations, checklist, and exportable Markdown/JSON.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="workflow-card"><b>4. Launch Report</b><br>Generate scores, recommendations, pilot checklist, and exportable reports.</div>', unsafe_allow_html=True)
 
 st.divider()
 
-with st.sidebar:
-    st.header("🍽️ MenuTaste")
-    st.write("AI product analyst for food entrepreneurs.")
+st.markdown("### Product analysis input")
+st.caption("Select a demo scenario from the sidebar or edit the fields below.")
 
-    st.markdown("### Demo ideas")
-    st.write("- Ethiopian breakfast bowl")
-    st.write("- Vegan protein smoothie")
-    st.write("- Premium focaccia")
-    st.write("- Healthy coffee drink")
+with st.container():
+    st.markdown('<div class="form-card">', unsafe_allow_html=True)
 
-    st.markdown("### Agent stack")
-    st.write("- Streamlit web app")
-    st.write("- Local scoring engine")
-    st.write("- Featherless AI reasoning")
-    st.write("- Markdown/JSON export")
+    col1, col2 = st.columns(2)
 
-    st.info("For the hackathon demo, show the Featherless Reasoning tab and Export tab.")
+    with col1:
+        product_name = st.text_input("Product name", value=demo["product_name"])
+        description = st.text_area("Short description", value=demo["description"], height=105)
+        raw_ingredients = st.text_area("Ingredients, separated by commas", value=demo["ingredients"], height=105)
+        target_price = st.number_input("Target price in EUR", min_value=1.0, max_value=100.0, value=float(demo["target_price"]), step=0.5)
 
-col1, col2 = st.columns(2)
+    with col2:
+        business_type = st.selectbox("Business type", BUSINESS_TYPES, index=option_index(BUSINESS_TYPES, demo["business_type"]))
+        location = st.text_input("Location", value=demo["location"])
+        customer_segment = st.selectbox("Customer segment", CUSTOMER_SEGMENTS, index=option_index(CUSTOMER_SEGMENTS, demo["customer_segment"]))
+        dietary_focus = st.selectbox("Dietary focus", DIETARY_FOCUS, index=option_index(DIETARY_FOCUS, demo["dietary_focus"]))
+        preparation_complexity = st.selectbox("Preparation complexity", ["Low", "Medium", "High"], index=option_index(["Low", "Medium", "High"], demo["complexity"]))
+        language = st.selectbox("Output language", ["English", "Italian"], index=0)
 
-with col1:
-    product_name = st.text_input("Product name", value="Ethiopian chickpea breakfast bowl")
-    description = st.text_area(
-        "Short description",
-        value="A warm breakfast bowl with chickpeas, tomato, spinach, olive oil, lemon, and spices.",
-        height=100,
-    )
-    raw_ingredients = st.text_area(
-        "Ingredients, separated by commas",
-        value="chickpeas, tomato, spinach, olive oil, lemon, salt",
-        height=100,
-    )
-    target_price = st.number_input("Target price in EUR", min_value=1.0, max_value=100.0, value=8.5, step=0.5)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-with col2:
-    business_type = st.selectbox("Business type", BUSINESS_TYPES)
-    location = st.text_input("Location", value="Milan, Italy")
-    customer_segment = st.selectbox("Customer segment", CUSTOMER_SEGMENTS)
-    dietary_focus = st.selectbox("Dietary focus", DIETARY_FOCUS)
-    preparation_complexity = st.selectbox("Preparation complexity", ["Low", "Medium", "High"], index=1)
-    language = st.selectbox("Output language", ["English", "Italian"], index=0)
+run_clicked = st.button("Run MenuTaste Agent", type="primary")
 
-if st.button("Run MenuTaste Agent", type="primary"):
+if run_clicked:
     ingredients = clean_ingredients(raw_ingredients)
-    product = ProductInput(
-        product_name=product_name,
-        description=description,
-        ingredients=ingredients,
-        business_type=business_type,
-        location=location,
-        customer_segment=customer_segment,
-        dietary_focus=dietary_focus,
-        target_price_eur=target_price,
-        preparation_complexity=preparation_complexity,
-        language=language,
-    )
+
+    if not ingredients:
+        st.error("Please add at least one ingredient.")
+        st.stop()
+
+    try:
+        product = ProductInput(
+            product_name=product_name,
+            description=description,
+            ingredients=ingredients,
+            business_type=business_type,
+            location=location,
+            customer_segment=customer_segment,
+            dietary_focus=dietary_focus,
+            target_price_eur=target_price,
+            preparation_complexity=preparation_complexity,
+            language=language,
+        )
+    except ValidationError as exc:
+        st.error("Please fix the product input before running the agent.")
+        st.code(str(exc))
+        st.stop()
 
     with st.spinner("Running MenuTaste reasoning workflow..."):
         report = run_menutaste_agent(product)
 
-    st.success("MenuTaste report generated.")
+    st.markdown('<div class="success-box">MenuTaste report generated.</div>', unsafe_allow_html=True)
 
     score_items = [
         ("Overall", report.scores.overall_score),
@@ -202,15 +428,7 @@ if st.button("Run MenuTaste Agent", type="primary"):
     score_cols = st.columns(5)
     for col, (label, value) in zip(score_cols, score_items):
         with col:
-            st.markdown(
-                f"""
-                <div class="score-card">
-                    <div class="score-label">{label}</div>
-                    <div class="score-value">{value}/100</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+            render_score_card(label, value)
 
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
         "Summary",
@@ -219,12 +437,21 @@ if st.button("Run MenuTaste Agent", type="primary"):
         "Recommendations",
         "Export",
     ])
-        
+
     with tab1:
         st.subheader("Executive Summary")
-        st.write(report.executive_summary)
-        st.subheader("Positioning")
-        st.write(report.positioning)
+        render_info_card("Business-ready summary", report.executive_summary)
+
+        st.subheader("Product Positioning")
+        render_info_card("Suggested market message", report.positioning)
+
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            render_small_card("Business type", report.product.business_type)
+        with c2:
+            render_small_card("Target customer", report.product.customer_segment)
+        with c3:
+            render_small_card("Target price", f"EUR {report.product.target_price_eur:.2f}")
 
     with tab2:
         st.subheader("Nutrition Estimate")
@@ -242,62 +469,74 @@ if st.button("Run MenuTaste Agent", type="primary"):
         n_cols = st.columns(4)
         for idx, (label, value) in enumerate(nutrition_items.items()):
             with n_cols[idx % 4]:
-                st.markdown(
-                    f"""
-                    <div class="score-card">
-                        <div class="score-label">{label}</div>
-                        <div class="score-value" style="font-size:24px;">{value}</div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
-                )
+                render_small_card(label, value)
 
-        st.subheader("Risks")
-        st.write("Allergens:", ", ".join(report.risks.allergen_risks))
-        st.write("Dietary conflicts:", ", ".join(report.risks.dietary_conflicts))
-        st.write("Quality risks:", ", ".join(report.risks.quality_risks))
-        st.write("Operational risks:", ", ".join(report.risks.operational_risks))
-
-        st.subheader("Ingredient Notes")
-
-        for ingredient, note in report.ingredient_notes.items():
+        st.subheader("Risk Review")
+        risk_items = {
+            "Allergens": ", ".join(report.risks.allergen_risks),
+            "Dietary conflicts": ", ".join(report.risks.dietary_conflicts),
+            "Quality risks": ", ".join(report.risks.quality_risks),
+            "Operational risks": ", ".join(report.risks.operational_risks),
+        }
+        for label, value in risk_items.items():
             st.markdown(
                 f"""
-                <div class="section-box">
-                    <b>{ingredient.title()}</b><br>
-                    <span style="color:#4b5563;">{note}</span>
+                <div class="risk-box">
+                    <b>{label}</b><br>{value}
                 </div>
                 """,
                 unsafe_allow_html=True,
             )
-    
+
+        st.subheader("Ingredient Notes")
+        for ingredient, note in report.ingredient_notes.items():
+            render_info_card(ingredient.title(), note)
+
     with tab3:
-        st.subheader("AI Reasoning")
-        st.write(report.ai_reasoning)
+        st.subheader("Featherless AI Reasoning")
+        st.caption("This section is generated from the structured prompt sent to the Featherless model.")
+        st.markdown(report.ai_reasoning)
 
     with tab4:
-        st.subheader("Recommendations")
-        for rec in report.recommendations:
-            st.markdown(f"- {rec}")
+        st.subheader("Recommended Actions")
+        for idx, rec in enumerate(report.recommendations, start=1):
+            render_info_card(f"Action {idx}", rec)
 
         st.subheader("Launch Checklist")
-        for item in report.launch_checklist:
-            st.checkbox(item, value=False)
+        for idx, item in enumerate(report.launch_checklist):
+            st.checkbox(item, value=False, key=f"launch_{idx}_{item}")
 
     with tab5:
         markdown_report = report_to_markdown(report)
         json_report = report_to_json(report)
 
-        st.download_button(
-            "Download Markdown Report",
-            markdown_report,
-            file_name="menutaste_report.md",
-            mime="text/markdown",
-        )
-        st.download_button(
-            "Download JSON Report",
-            json_report,
-            file_name="menutaste_report.json",
-            mime="application/json",
-        )
-        st.text_area("Markdown Preview", markdown_report, height=350)
+        st.subheader("Export Report")
+        e1, e2 = st.columns(2)
+        with e1:
+            st.download_button(
+                "Download Markdown Report",
+                markdown_report,
+                file_name="menutaste_report.md",
+                mime="text/markdown",
+            )
+        with e2:
+            st.download_button(
+                "Download JSON Report",
+                json_report,
+                file_name="menutaste_report.json",
+                mime="application/json",
+            )
+
+        st.subheader("Markdown Preview")
+        st.text_area("Report content", markdown_report, height=420, label_visibility="collapsed")
+else:
+    st.markdown(
+        """
+        <div class="section-box">
+            <b>Ready to run.</b><br>
+            Choose a demo scenario, edit the details, and click <b>Run MenuTaste Agent</b>.
+            The app will combine local scoring with Featherless model reasoning.
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
