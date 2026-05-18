@@ -126,179 +126,260 @@ def featherless_status() -> str:
 st.markdown(
     """
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
     .stApp {
-        background: #f8fafc;
+        background: #f3f7f2;
+        color: #0f172a;
     }
 
     section[data-testid="stSidebar"] {
-        background: #eef2f7;
-        border-right: 1px solid #dbe3ee;
+        background: #e6eef7;
+        border-right: 1px solid #cbd8e6;
+    }
+
+    section[data-testid="stSidebar"] * {
+        font-size: 15px;
+        color: #102033;
+    }
+
+    section[data-testid="stSidebar"] h1,
+    section[data-testid="stSidebar"] h2,
+    section[data-testid="stSidebar"] h3 {
+        color: #0f172a;
+        font-weight: 850;
     }
 
     .block-container {
         padding-top: 2.2rem;
-        padding-bottom: 3rem;
-        max-width: 1500px;
+        padding-bottom: 3.2rem;
+        max-width: 1480px;
     }
 
-    .hero-box {
-        padding: 34px 36px;
-        border-radius: 26px;
-        background: linear-gradient(135deg, #fff7ed 0%, #ecfdf5 55%, #eef6ff 100%);
-        border: 1px solid #fed7aa;
-        margin-bottom: 22px;
-        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+    h1, h2, h3 {
+        color: #0f172a;
+        letter-spacing: -0.03em;
     }
 
-    .hero-title {
-        font-size: 44px;
-        font-weight: 850;
-        color: #111827;
-        margin-bottom: 10px;
-        letter-spacing: -0.04em;
-    }
-
-    .hero-subtitle {
-        font-size: 18px;
-        color: #334155;
-        max-width: 980px;
+    p, li, label, span, div {
+        font-size: 16px;
         line-height: 1.55;
     }
 
+    label,
+    [data-testid="stWidgetLabel"] p {
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        color: #1f2937 !important;
+    }
+
+    input, textarea, select {
+        font-size: 16px !important;
+    }
+
+    .hero-box {
+        padding: 42px 44px;
+        border-radius: 28px;
+        background: linear-gradient(135deg, #fff7ed 0%, #eefdf4 55%, #e8f4ff 100%);
+        border: 1px solid #fdba74;
+        margin-bottom: 24px;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, 0.07);
+    }
+
+    .hero-title {
+        font-size: 52px;
+        font-weight: 900;
+        color: #0b1220;
+        margin-bottom: 14px;
+        letter-spacing: -0.055em;
+        line-height: 1.05;
+    }
+
+    .hero-subtitle {
+        font-size: 19px;
+        color: #243447;
+        max-width: 1080px;
+        line-height: 1.65;
+        font-weight: 500;
+    }
+
     .badge-row {
-        margin-top: 18px;
+        margin-top: 22px;
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 12px;
     }
 
     .badge {
-        padding: 7px 12px;
+        padding: 8px 14px;
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.8);
-        border: 1px solid #e2e8f0;
-        color: #334155;
-        font-size: 13px;
-        font-weight: 700;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #dbe4ef;
+        color: #233247;
+        font-size: 14px;
+        font-weight: 800;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
     }
 
     .workflow-card {
-        padding: 18px 18px;
-        border-radius: 18px;
-        background: white;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 5px 16px rgba(15, 23, 42, 0.06);
-        height: 100%;
-        color: #1f2937;
-        line-height: 1.45;
+        padding: 22px 22px;
+        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #d9e2ec;
+        box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+        min-height: 118px;
+        color: #1e293b;
+        line-height: 1.55;
+        font-size: 16px;
     }
 
     .workflow-card b {
-        color: #111827;
-    }
-
-    .form-card {
-        padding: 18px 20px 4px 20px;
-        border-radius: 22px;
-        background: white;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
-        margin-top: 12px;
+        color: #0f172a;
+        font-size: 17px;
+        font-weight: 850;
     }
 
     .score-card {
-        padding: 20px;
-        border-radius: 20px;
-        background: white;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 7px 18px rgba(15, 23, 42, 0.07);
-        min-height: 112px;
+        padding: 24px;
+        border-radius: 22px;
+        background: #ffffff;
+        border: 1px solid #d8e2ee;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+        min-height: 128px;
     }
 
     .score-label {
-        font-size: 12px;
+        font-size: 13px;
         color: #64748b;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        font-weight: 800;
+        letter-spacing: 0.09em;
+        font-weight: 850;
         margin-bottom: 8px;
     }
 
     .score-value {
-        font-size: 34px;
-        font-weight: 850;
+        font-size: 39px;
+        font-weight: 900;
         color: #020617;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.055em;
+        line-height: 1.1;
     }
 
     .score-tone {
-        margin-top: 6px;
-        font-size: 13px;
+        margin-top: 8px;
+        font-size: 14px;
         color: #475569;
-        font-weight: 700;
+        font-weight: 800;
     }
 
     .mini-card {
-        padding: 18px 20px;
-        border-radius: 18px;
-        background: white;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
-        min-height: 96px;
+        padding: 22px 24px;
+        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #d8e2ee;
+        box-shadow: 0 7px 18px rgba(15, 23, 42, 0.06);
+        min-height: 108px;
     }
 
     .mini-value {
-        font-size: 23px;
-        font-weight: 800;
-        color: #020617;
+        font-size: 27px;
+        font-weight: 900;
+        color: #0f172a;
+        line-height: 1.2;
     }
 
     .section-box {
-        padding: 18px 22px;
-        border-radius: 18px;
-        background: white;
-        border: 1px solid #e5e7eb;
-        margin: 10px 0;
-        color: #334155;
-        box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
-        line-height: 1.55;
+        padding: 22px 26px;
+        border-radius: 20px;
+        background: #ffffff;
+        border: 1px solid #d8e2ee;
+        margin: 12px 0;
+        color: #243447;
+        box-shadow: 0 5px 16px rgba(15, 23, 42, 0.05);
+        line-height: 1.65;
+        font-size: 16px;
+    }
+
+    .section-box b {
+        color: #0f172a;
+        font-size: 17px;
     }
 
     .risk-box {
-        padding: 16px 20px;
-        border-radius: 16px;
+        padding: 18px 22px;
+        border-radius: 18px;
         background: #fff7ed;
-        border: 1px solid #fed7aa;
-        margin-bottom: 10px;
+        border: 1px solid #fdba74;
+        margin-bottom: 12px;
+        color: #263445;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+    .risk-box b {
+        color: #9a3412;
+        font-size: 17px;
     }
 
     .success-box {
-        padding: 16px 20px;
-        border-radius: 16px;
-        background: #ecfdf5;
-        border: 1px solid #bbf7d0;
+        padding: 18px 22px;
+        border-radius: 18px;
+        background: #dcfce7;
+        border: 1px solid #86efac;
         color: #166534;
-        font-weight: 700;
-        margin: 14px 0 18px 0;
+        font-size: 17px;
+        font-weight: 850;
+        margin: 18px 0 22px 0;
     }
 
     div.stButton > button:first-child {
         background: #ef4444;
         color: white;
-        border-radius: 14px;
-        padding: 0.75rem 1.25rem;
+        border-radius: 16px;
+        padding: 0.9rem 1.35rem;
         border: none;
-        font-weight: 800;
-        box-shadow: 0 8px 16px rgba(239, 68, 68, 0.25);
+        font-size: 16px;
+        font-weight: 850;
+        box-shadow: 0 10px 22px rgba(239, 68, 68, 0.28);
     }
 
     div.stButton > button:first-child:hover {
         background: #dc2626;
         color: white;
+        transform: translateY(-1px);
+    }
+
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 8px;
+        border-bottom: 1px solid #cbd5e1;
+    }
+
+    .stTabs [data-baseweb="tab"] {
+        font-size: 16px;
+        font-weight: 750;
+        padding: 12px 10px;
+    }
+
+    div[data-testid="stTextInput"] input,
+    div[data-testid="stNumberInput"] input,
+    div[data-testid="stTextArea"] textarea,
+    div[data-baseweb="select"] {
+        background: #edf2f7 !important;
+        border-radius: 12px !important;
+        border: 1px solid #d7e0ea !important;
     }
 
     div[data-testid="column"] {
-        padding-bottom: 12px;
+        padding-bottom: 14px;
+    }
+
+    hr {
+        border-color: #cbd5e1;
+        margin: 2.2rem 0;
     }
     </style>
     """,
@@ -365,8 +446,6 @@ st.markdown("### Product analysis input")
 st.caption("Select a demo scenario from the sidebar or edit the fields below.")
 
 with st.container():
-    st.markdown('<div class="form-card">', unsafe_allow_html=True)
-
     col1, col2 = st.columns(2)
 
     with col1:
@@ -383,7 +462,6 @@ with st.container():
         preparation_complexity = st.selectbox("Preparation complexity", ["Low", "Medium", "High"], index=option_index(["Low", "Medium", "High"], demo["complexity"]))
         language = st.selectbox("Output language", ["English", "Italian"], index=0)
 
-    st.markdown('</div>', unsafe_allow_html=True)
 
 run_clicked = st.button("Run MenuTaste Agent", type="primary")
 
