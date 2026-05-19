@@ -207,6 +207,10 @@ def run_menutaste_agent(product: ProductInput) -> AgentReport:
         target_price_eur=product.target_price_eur,
         dietary_focus=product.dietary_focus,
         complexity=product.preparation_complexity,
+        business_type=product.business_type,
+        customer_segment=product.customer_segment,
+        location=product.location,
+        description=product.description,
     ))
 
     deterministic_summary = (
