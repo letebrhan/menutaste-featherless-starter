@@ -594,19 +594,38 @@ st.markdown(
         margin: 18px 0 22px 0;
     }
 
+    /* Main run button */
     div.stButton > button:first-child {
-        background: #ef4444;
+        background: linear-gradient(135deg, #16a34a 0%, #0f766e 100%);
         color: white;
         border-radius: 16px;
         padding: 0.9rem 1.35rem;
         border: none;
         font-size: clamp(14px, 1vw, 16px);
         font-weight: 850;
-        box-shadow: 0 10px 22px rgba(239, 68, 68, 0.28);
+        box-shadow: 0 10px 22px rgba(22, 163, 74, 0.26);
     }
 
     div.stButton > button:first-child:hover {
-        background: #dc2626;
+        background: linear-gradient(135deg, #15803d 0%, #0f766e 100%);
+        color: white;
+        transform: translateY(-1px);
+    }
+
+    /* Export download buttons */
+    div.stDownloadButton > button {
+        background: #2563eb;
+        color: white;
+        border-radius: 14px;
+        padding: 0.8rem 1.2rem;
+        border: none;
+        font-size: clamp(14px, 1vw, 16px);
+        font-weight: 800;
+        box-shadow: 0 8px 18px rgba(37, 99, 235, 0.22);
+    }
+
+    div.stDownloadButton > button:hover {
+        background: #1d4ed8;
         color: white;
         transform: translateY(-1px);
     }
