@@ -31,6 +31,13 @@ Rules:
 
 
 def get_setting(name: str, default: str = "") -> str:
+    try:
+        session_value = st.session_state.get(name)
+        if session_value is not None and str(session_value).strip():
+            return str(session_value)
+    except Exception:
+        pass
+
     env_value = os.getenv(name)
     if env_value is not None and str(env_value).strip():
         return str(env_value)
