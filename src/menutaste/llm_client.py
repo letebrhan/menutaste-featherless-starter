@@ -31,14 +31,20 @@ Rules:
 
 
 def get_setting(name: str, default: str = "") -> str:
+    env_value = os.getenv(name)
+    if env_value is not None and str(env_value).strip():
+        return str(env_value)
+
     try:
+        import streamlit as st
+
         value = st.secrets.get(name)
         if value is not None and str(value).strip():
             return str(value)
     except Exception:
         pass
 
-    return os.getenv(name, default)
+    return default
 
 
 def featherless_enabled() -> bool:
