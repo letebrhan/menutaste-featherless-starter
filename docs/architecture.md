@@ -1,32 +1,77 @@
-# Architecture
+# MenuTaste Architecture
 
-MenuTaste follows a simple production-style architecture.
+## Overview
 
-## Components
+MenuTaste is a Streamlit-based AI agent for food entrepreneurs. It analyzes a food or drink idea and generates a product-quality, nutrition, risk, market-fit, and launch-readiness report.
 
-1. Streamlit Web UI
-   - Collects food product details.
-   - Displays scorecards, reasoning, risks, recommendations, and exports.
+## Main Components
 
-2. Validation Layer
-   - Cleans ingredient input.
-   - Validates structured product data with Pydantic.
+## 1. Streamlit UI
 
-3. Deterministic Analysis Engine
-   - Estimates nutrition signals from ingredient hints.
-   - Detects allergens and dietary conflicts.
-   - Scores nutrition, quality, market fit, and operations.
+File: `app.py`
 
-4. Featherless Reasoning Layer
-   - Uses OpenAI-compatible Featherless chat completions.
-   - Produces strategic product reasoning.
-   - Falls back safely if the API key is missing.
+The UI collects:
 
-5. Report Layer
-   - Creates Markdown and JSON exports.
+- Product name
+- Description
+- Ingredients
+- Business type
+- Location
+- Customer segments
+- Dietary focuses
+- Target price
+- Preparation complexity
+- Output language
 
-## Why This Is Agentic
+## 2. Local Analysis Engine
 
-The app does not only chat. It follows a multi-step workflow:
+Files:
 
-Input -> validation -> nutrition analysis -> risk detection -> scoring -> AI reasoning -> recommendations -> launch checklist -> export.
+- `src/menutaste/scoring.py`
+- `src/menutaste/nutrition_db.py`
+- `src/menutaste/validators.py`
+
+The local engine performs deterministic checks for:
+
+- Nutrition signals
+- Allergen risks
+- Dietary conflicts
+- Market fit
+- Operational complexity
+- Overall score
+
+## 3. Agent Workflow
+
+File: `src/menutaste/agent.py`
+
+The agent combines:
+
+- Cleaned product input
+- Nutrition estimate
+- Risk assessment
+- Score calculation
+- Featherless AI reasoning
+- Recommendations
+- Launch checklist
+
+## 4. Featherless AI Reasoning
+
+File: `src/menutaste/llm_client.py`
+
+The app sends a structured prompt to a Featherless-hosted open-source model. The model produces business-ready reasoning in English or Italian.
+
+## 5. Export Layer
+
+Files:
+
+- `src/menutaste/report.py`
+- `src/menutaste/export_utils.py`
+
+The app exports reports as:
+
+- Markdown
+- JSON
+
+## Data Flow
+
+User input -> Validation -> Local scoring -> Featherless reasoning -> Agent report -> UI tabs -> Markdown/JSON export

@@ -1,43 +1,52 @@
-# Demo Video Script
+# MenuTaste Demo Script
 
-## 0:00 - 0:15 Problem
+## Demo length
+Target: 2 to 3 minutes.
 
-Food entrepreneurs often have product ideas but cannot quickly evaluate nutrition positioning, allergen risks, customer fit, pricing, and launch readiness.
+## Opening
 
-## 0:15 - 0:35 Solution
+Hello, this is MenuTaste AI Agent, a Featherless-powered product analysis copilot for food entrepreneurs.
 
-MenuTaste is a Featherless-powered AI agent that turns a food or drink idea into a practical product-quality and launch report.
+MenuTaste helps small food businesses evaluate a food or drink idea before launching it.
 
-## 0:35 - 1:20 Live Demo
+## Step 1: Product input
 
-Enter an example:
-- Product: Ethiopian chickpea breakfast bowl
-- Ingredients: chickpeas, tomato, spinach, olive oil, lemon, salt
-- Business type: Cafe
-- Location: Milan
-- Customer segment: Office workers
-- Dietary focus: High protein
+I select a demo scenario, such as an Ethiopian chickpea breakfast bowl.
 
-Click Run MenuTaste Agent.
+The app collects product name, description, ingredients, business type, location, customer segment, dietary focus, target price, and preparation complexity.
 
-Show:
-- overall score
-- nutrition estimate
-- risk analysis
-- Featherless reasoning
-- recommendations
-- launch checklist
+## Step 2: Run the agent
 
-## 1:20 - 1:45 Architecture
+I click Run MenuTaste Agent.
 
-Explain:
-- Streamlit frontend
-- Pydantic validation
-- local nutrition and risk scoring
-- Featherless OpenAI-compatible reasoning
-- Markdown and JSON export
-- Docker and Vultr deployment
+The app combines deterministic local analysis with Featherless AI reasoning.
 
-## 1:45 - 2:00 Closing
+## Step 3: Scores
 
-MenuTaste helps food entrepreneurs move from idea to safer, clearer, and more testable food products.
+MenuTaste generates scores for:
+
+- Overall readiness
+- Nutrition
+- Quality
+- Market fit
+- Operations
+
+## Step 4: Nutrition and risks
+
+The app identifies nutrition signals, allergen risks, dietary conflicts, quality risks, and operational risks.
+
+## Step 5: Featherless reasoning
+
+The Featherless-powered reasoning tab gives structured business advice, including product quality verdict, positioning, risk review, and launch recommendations.
+
+## Step 6: Recommendations
+
+The app creates recommended actions and a launch checklist for a small pilot.
+
+## Step 7: Export
+
+Finally, the entrepreneur can export the report as Markdown or JSON.
+
+## Closing
+
+MenuTaste is designed for food entrepreneurs who need fast, practical, multilingual product validation before launching a menu item or food product.
