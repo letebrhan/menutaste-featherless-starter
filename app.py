@@ -841,18 +841,6 @@ with st.sidebar:
     selected_demo_display = st.selectbox(T["demo_label"], demo_display_names)
     selected_demo = reverse_tr(selected_demo_display, language)
     demo = translated_demo_values(selected_demo, language)
-
-    runtime_api_key = st.text_input(
-        "Featherless API key",
-        type="password",
-        help="Optional. Used only for this browser session and not saved to GitHub.",
-    )
-
-    if runtime_api_key:
-        st.session_state["FEATHERLESS_API_KEY"] = runtime_api_key
-        st.session_state["USE_FEATHERLESS"] = "true"
-        st.session_state["FEATHERLESS_MODEL"] = "deepseek-ai/DeepSeek-V3-0324"
-        st.session_state["FEATHERLESS_BASE_URL"] = "https://api.featherless.ai/v1"
         
     st.markdown(f"### {T['agent_status']}")
     status = featherless_status()
