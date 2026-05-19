@@ -783,7 +783,7 @@ st.markdown(
 
     hr {
         border-color: #cbd5e1;
-        margin: 2.0rem 0;
+        margin: 1.4rem 0;
     }
 
     @media (max-width: 900px) {

@@ -1,0 +1,11 @@
+.env
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+.streamlit/secrets.toml
+.pytest_cache/
+.coverage
+
+# temporary files
