@@ -64,9 +64,235 @@ DEMO_SCENARIOS = {
     },
 }
 
+UI_TEXT = {
+    "English": {
+        "sidebar_title": "🍽️ MenuTaste",
+        "sidebar_subtitle": "AI product analyst for food entrepreneurs.",
+        "language_label": "Language",
+        "demo_label": "Choose a demo scenario",
+        "agent_status": "Agent status",
+        "connected": "Featherless connected",
+        "disabled": "Featherless disabled",
+        "missing_key": "Featherless key missing",
+        "agent_stack": "Agent stack",
+        "stack_items": ["Streamlit web app", "Local scoring engine", "Featherless AI reasoning", "Markdown/JSON export"],
+        "demo_tip": "Demo tip: show Summary, Nutrition & Risks, Featherless Reasoning, and Export.",
+        "hero_title": "🍽️ MenuTaste AI Agent",
+        "hero_subtitle": "Featherless-powered quality, nutrition, and launch copilot for food entrepreneurs. MenuTaste turns a food or drink idea into a clear product-quality, nutrition, risk, market-fit, and launch-readiness report for small food businesses.",
+        "badges": ["Featherless AI", "Food product analysis", "Risk detection", "Launch checklist", "Markdown and JSON export"],
+        "workflow": [
+            ("1. Product Input", "Collect product, ingredients, target customer, price, location, and dietary goal."),
+            ("2. Local Analysis", "Estimate nutrition signals, allergens, dietary conflicts, and operational risks."),
+            ("3. Featherless Reasoning", "Send a structured prompt to an open-source model for product strategy."),
+            ("4. Launch Report", "Generate scores, recommendations, pilot checklist, and exportable reports."),
+        ],
+        "input_title": "Product analysis input",
+        "input_caption": "Select a demo scenario from the sidebar or edit the fields below.",
+        "product_name": "Product name",
+        "description": "Short description",
+        "ingredients": "Ingredients, separated by commas",
+        "target_price": "Target price in EUR",
+        "business_type": "Business type",
+        "location": "Location",
+        "customer_segment": "Customer segment",
+        "dietary_focus": "Dietary focus",
+        "complexity": "Preparation complexity",
+        "output_language": "Output language",
+        "run": "Run MenuTaste Agent",
+        "report_generated": "MenuTaste report generated.",
+        "tabs": ["Summary", "Nutrition & Risks", "Featherless Reasoning", "Recommendations", "Export"],
+        "scores": ["Overall", "Nutrition", "Quality", "Market Fit", "Operations"],
+        "tones": {"Strong": "Strong", "Ready to test": "Ready to test", "Needs work": "Needs work"},
+        "summary_title": "Executive Summary",
+        "summary_card": "Business-ready summary",
+        "positioning_title": "Product Positioning",
+        "positioning_card": "Suggested market message",
+        "business_type_card": "Business type",
+        "target_customer_card": "Target customer",
+        "target_price_card": "Target price",
+        "nutrition_title": "Nutrition Estimate",
+        "risk_title": "Risk Review",
+        "ingredient_notes": "Ingredient Notes",
+        "risk_labels": ["Allergens", "Dietary conflicts", "Quality risks", "Operational risks"],
+        "ai_title": "Featherless AI Reasoning",
+        "ai_caption": "This section is generated from the structured prompt sent to the Featherless model.",
+        "actions_title": "Recommended Actions",
+        "action": "Action",
+        "checklist_title": "Launch Checklist",
+        "export_title": "Export Report",
+        "download_md": "Download Markdown Report",
+        "download_json": "Download JSON Report",
+        "markdown_preview": "Markdown Preview",
+        "report_content": "Report content",
+        "ready_title": "Ready to run.",
+        "ready_body": "Choose a demo scenario, edit the details, and click <b>Run MenuTaste Agent</b>. The app will combine local scoring with Featherless model reasoning.",
+        "validation_ingredients": "Please add at least one ingredient.",
+        "validation_input": "Please fix the product input before running the agent.",
+    },
+    "Italian": {
+        "sidebar_title": "🍽️ MenuTaste",
+        "sidebar_subtitle": "Analista AI di prodotto per imprenditori del food.",
+        "language_label": "Lingua",
+        "demo_label": "Scegli uno scenario demo",
+        "agent_status": "Stato agente",
+        "connected": "Featherless connesso",
+        "disabled": "Featherless disattivato",
+        "missing_key": "Chiave Featherless mancante",
+        "agent_stack": "Stack agente",
+        "stack_items": ["App web Streamlit", "Motore di scoring locale", "Ragionamento AI Featherless", "Export Markdown/JSON"],
+        "demo_tip": "Suggerimento demo: mostra Riepilogo, Nutrizione e rischi, Ragionamento Featherless ed Export.",
+        "hero_title": "🍽️ MenuTaste AI Agent",
+        "hero_subtitle": "Copilota Featherless per qualità, nutrizione e lancio per imprenditori del food. MenuTaste trasforma un'idea food o drink in un report chiaro su qualità del prodotto, nutrizione, rischi, market fit e prontezza al lancio per piccole imprese alimentari.",
+        "badges": ["Featherless AI", "Analisi prodotto food", "Rilevamento rischi", "Checklist di lancio", "Export Markdown e JSON"],
+        "workflow": [
+            ("1. Input prodotto", "Raccoglie prodotto, ingredienti, cliente target, prezzo, luogo e obiettivo dietetico."),
+            ("2. Analisi locale", "Stima segnali nutrizionali, allergeni, conflitti dietetici e rischi operativi."),
+            ("3. Ragionamento Featherless", "Invia un prompt strutturato a un modello open-source per la strategia prodotto."),
+            ("4. Report di lancio", "Genera punteggi, raccomandazioni, checklist pilota e report esportabili."),
+        ],
+        "input_title": "Input analisi prodotto",
+        "input_caption": "Seleziona uno scenario demo dalla sidebar oppure modifica i campi qui sotto.",
+        "product_name": "Nome prodotto",
+        "description": "Breve descrizione",
+        "ingredients": "Ingredienti, separati da virgole",
+        "target_price": "Prezzo target in EUR",
+        "business_type": "Tipo di attività",
+        "location": "Località",
+        "customer_segment": "Segmento clienti",
+        "dietary_focus": "Focus dietetico",
+        "complexity": "Complessità di preparazione",
+        "output_language": "Lingua output",
+        "run": "Esegui agente MenuTaste",
+        "report_generated": "Report MenuTaste generato.",
+        "tabs": ["Riepilogo", "Nutrizione e rischi", "Ragionamento Featherless", "Raccomandazioni", "Export"],
+        "scores": ["Totale", "Nutrizione", "Qualità", "Market fit", "Operazioni"],
+        "tones": {"Strong": "Forte", "Ready to test": "Pronto da testare", "Needs work": "Da migliorare"},
+        "summary_title": "Riepilogo esecutivo",
+        "summary_card": "Sintesi pronta per il business",
+        "positioning_title": "Posizionamento prodotto",
+        "positioning_card": "Messaggio di mercato suggerito",
+        "business_type_card": "Tipo di attività",
+        "target_customer_card": "Cliente target",
+        "target_price_card": "Prezzo target",
+        "nutrition_title": "Stima nutrizionale",
+        "risk_title": "Revisione rischi",
+        "ingredient_notes": "Note sugli ingredienti",
+        "risk_labels": ["Allergeni", "Conflitti dietetici", "Rischi qualità", "Rischi operativi"],
+        "ai_title": "Ragionamento AI Featherless",
+        "ai_caption": "Questa sezione è generata dal prompt strutturato inviato al modello Featherless.",
+        "actions_title": "Azioni raccomandate",
+        "action": "Azione",
+        "checklist_title": "Checklist di lancio",
+        "export_title": "Esporta report",
+        "download_md": "Scarica report Markdown",
+        "download_json": "Scarica report JSON",
+        "markdown_preview": "Anteprima Markdown",
+        "report_content": "Contenuto report",
+        "ready_title": "Pronto per l'analisi.",
+        "ready_body": "Scegli uno scenario demo, modifica i dettagli e clicca <b>Esegui agente MenuTaste</b>. L'app combinerà scoring locale e ragionamento del modello Featherless.",
+        "validation_ingredients": "Aggiungi almeno un ingrediente.",
+        "validation_input": "Correggi l'input del prodotto prima di eseguire l'agente.",
+    },
+}
+
+TRANSLATIONS = {
+    "Italian": {
+        "Ethiopian breakfast bowl": "Bowl etiope per colazione",
+        "Vegan protein smoothie": "Smoothie proteico vegano",
+        "Premium focaccia": "Focaccia premium",
+        "Healthy coffee drink": "Bevanda al caffè leggera",
+        "Cafe": "Caffetteria",
+        "Restaurant": "Ristorante",
+        "Cloud kitchen": "Cloud kitchen",
+        "Catering": "Catering",
+        "Food truck": "Food truck",
+        "Packaged food product": "Prodotto alimentare confezionato",
+        "Juice or drink bar": "Juice bar o drink bar",
+        "Bakery": "Panetteria",
+        "Students": "Studenti",
+        "Office workers": "Impiegati",
+        "Families": "Famiglie",
+        "Fitness-focused customers": "Clienti orientati al fitness",
+        "Tourists": "Turisti",
+        "Premium food lovers": "Clienti premium amanti del food",
+        "Budget-conscious customers": "Clienti attenti al budget",
+        "None": "Nessuno",
+        "High protein": "Alto contenuto proteico",
+        "Low sugar": "Basso zucchero",
+        "Vegetarian": "Vegetariano",
+        "Vegan": "Vegano",
+        "Gluten-free": "Senza glutine",
+        "Dairy-free": "Senza latticini",
+        "Halal-friendly": "Adatto halal",
+        "Low": "Bassa",
+        "Medium": "Media",
+        "High": "Alta",
+        "English": "Inglese",
+        "Italian": "Italiano",
+        "Protein": "Proteine",
+        "Carbohydrates": "Carboidrati",
+        "Fat": "Grassi",
+        "Vitamin/mineral signal": "Segnale vitamine/minerali",
+        "Fiber signal": "Segnale fibre",
+        "Sugar risk": "Rischio zucchero",
+        "Salt risk": "Rischio sale",
+    },
+    "English": {},
+}
+
+ITALIAN_DEMO_FIELDS = {
+    "Ethiopian breakfast bowl": {
+        "product_name": "Bowl etiope di ceci per colazione",
+        "description": "Una bowl calda per colazione con ceci, pomodoro, spinaci, olio d'oliva, limone e spezie.",
+    },
+    "Vegan protein smoothie": {
+        "product_name": "Smoothie proteico verde vegano",
+        "description": "Uno smoothie pronto da bere per clienti fitness e lavoratori impegnati.",
+    },
+    "Premium focaccia": {
+        "product_name": "Focaccia premium con pomodoro e olive",
+        "description": "Un prodotto da forno premium per clienti del pranzo e dell'aperitivo.",
+    },
+    "Healthy coffee drink": {
+        "product_name": "Shake al caffè d'avena a basso zucchero",
+        "description": "Una bevanda fredda al caffè posizionata come alternativa più leggera alle bevande dolci al caffè.",
+    },
+}
+
+
+def tr(value: str, language: str) -> str:
+    return TRANSLATIONS.get(language, {}).get(value, value)
+
+
+def reverse_tr(value: str, language: str) -> str:
+    if language == "English":
+        return value
+    mapping = TRANSLATIONS.get(language, {})
+    reverse = {translated: original for original, translated in mapping.items()}
+    return reverse.get(value, value)
+
+
+def display_options(options: list[str], language: str) -> list[str]:
+    return [tr(option, language) for option in options]
+
+
+def translated_demo_values(scenario_key: str, language: str) -> dict:
+    demo = DEMO_SCENARIOS[scenario_key].copy()
+    if language == "Italian":
+        demo.update(ITALIAN_DEMO_FIELDS.get(scenario_key, {}))
+    return demo
+
 
 def option_index(options: list[str], value: str) -> int:
     return options.index(value) if value in options else 0
+
+
+def localized_value(value: str, language: str) -> str:
+    return tr(value, language)
+
+
+def localized_list(values: list[str], language: str) -> list[str]:
+    return [tr(value, language) for value in values]
 
 
 def score_tone(value: int) -> str:
@@ -77,8 +303,8 @@ def score_tone(value: int) -> str:
     return "Needs work"
 
 
-def render_score_card(label: str, value: int) -> None:
-    tone = score_tone(value)
+def render_score_card(label: str, value: int, language: str) -> None:
+    tone = UI_TEXT[language]["tones"][score_tone(value)]
     st.markdown(
         f"""
         <div class="score-card">
@@ -526,95 +752,131 @@ st.markdown(
             padding: 6px 10px;
         }
     }
+    
     </style>
     """,
     unsafe_allow_html=True,
 )
 
+
 with st.sidebar:
-    st.header("🍽️ MenuTaste")
-    st.write("AI product analyst for food entrepreneurs.")
+    language_display = st.selectbox("Language / Lingua", ["English", "Italian"], index=0)
+    language = language_display
+    T = UI_TEXT[language]
 
-    selected_demo = st.selectbox("Choose a demo scenario", list(DEMO_SCENARIOS.keys()))
-    demo = DEMO_SCENARIOS[selected_demo]
+    st.header(T["sidebar_title"])
+    st.write(T["sidebar_subtitle"])
 
-    st.markdown("### Agent status")
+    demo_display_names = display_options(list(DEMO_SCENARIOS.keys()), language)
+    selected_demo_display = st.selectbox(T["demo_label"], demo_display_names)
+    selected_demo = reverse_tr(selected_demo_display, language)
+    demo = translated_demo_values(selected_demo, language)
+
+    st.markdown(f"### {T['agent_status']}")
     status = featherless_status()
     if status == "Connected":
-        st.success("Featherless connected")
+        st.success(T["connected"])
     elif status == "Disabled":
-        st.warning("Featherless disabled")
+        st.warning(T["disabled"])
     else:
-        st.warning("Featherless key missing")
+        st.warning(T["missing_key"])
 
-    st.markdown("### Agent stack")
-    st.write("- Streamlit web app")
-    st.write("- Local scoring engine")
-    st.write("- Featherless AI reasoning")
-    st.write("- Markdown/JSON export")
+    st.markdown(f"### {T['agent_stack']}")
+    for item in T["stack_items"]:
+        st.write(f"- {item}")
 
-    st.info("Demo tip: show Summary, Nutrition & Risks, Featherless Reasoning, and Export.")
+    st.info(T["demo_tip"])
 
 st.markdown(
     f"""
     <div class="hero-box">
-        <div class="hero-title">🍽️ {APP_TITLE}</div>
-        <div class="hero-subtitle">
-            {APP_SUBTITLE}. MenuTaste turns a food or drink idea into a clear product-quality,
-            nutrition, risk, market-fit, and launch-readiness report for small food businesses.
-        </div>
+        <div class="hero-title">{T["hero_title"]}</div>
+        <div class="hero-subtitle">{T["hero_subtitle"]}</div>
         <div class="badge-row">
-            <span class="badge">Featherless AI</span>
-            <span class="badge">Food product analysis</span>
-            <span class="badge">Risk detection</span>
-            <span class="badge">Launch checklist</span>
-            <span class="badge">Markdown and JSON export</span>
+            {''.join(f'<span class="badge">{badge}</span>' for badge in T["badges"])}
         </div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-wf1, wf2, wf3, wf4 = st.columns(4)
-with wf1:
-    st.markdown('<div class="workflow-card"><b>1. Product Input</b><br>Collect product, ingredients, target customer, price, location, and dietary goal.</div>', unsafe_allow_html=True)
-with wf2:
-    st.markdown('<div class="workflow-card"><b>2. Local Analysis</b><br>Estimate nutrition signals, allergens, dietary conflicts, and operational risks.</div>', unsafe_allow_html=True)
-with wf3:
-    st.markdown('<div class="workflow-card"><b>3. Featherless Reasoning</b><br>Send a structured prompt to an open-source model for product strategy.</div>', unsafe_allow_html=True)
-with wf4:
-    st.markdown('<div class="workflow-card"><b>4. Launch Report</b><br>Generate scores, recommendations, pilot checklist, and exportable reports.</div>', unsafe_allow_html=True)
+workflow_cols = st.columns(4)
+for col, (title, body) in zip(workflow_cols, T["workflow"]):
+    with col:
+        st.markdown(
+            f'<div class="workflow-card"><b>{title}</b><br>{body}</div>',
+            unsafe_allow_html=True,
+        )
 
 st.divider()
 
-st.markdown("### Product analysis input")
-st.caption("Select a demo scenario from the sidebar or edit the fields below.")
+st.markdown(f"### {T['input_title']}")
+st.caption(T["input_caption"])
 
 with st.container():
     col1, col2 = st.columns(2)
 
     with col1:
-        product_name = st.text_input("Product name", value=demo["product_name"])
-        description = st.text_area("Short description", value=demo["description"], height=105)
-        raw_ingredients = st.text_area("Ingredients, separated by commas", value=demo["ingredients"], height=105)
-        target_price = st.number_input("Target price in EUR", min_value=1.0, max_value=100.0, value=float(demo["target_price"]), step=0.5)
+        product_name = st.text_input(T["product_name"], value=demo["product_name"])
+        description = st.text_area(T["description"], value=demo["description"], height=105)
+        raw_ingredients = st.text_area(T["ingredients"], value=demo["ingredients"], height=105)
+        target_price = st.number_input(T["target_price"], min_value=1.0, max_value=100.0, value=float(demo["target_price"]), step=0.5)
 
     with col2:
-        business_type = st.selectbox("Business type", BUSINESS_TYPES, index=option_index(BUSINESS_TYPES, demo["business_type"]))
-        location = st.text_input("Location", value=demo["location"])
-        customer_segment = st.selectbox("Customer segment", CUSTOMER_SEGMENTS, index=option_index(CUSTOMER_SEGMENTS, demo["customer_segment"]))
-        dietary_focus = st.selectbox("Dietary focus", DIETARY_FOCUS, index=option_index(DIETARY_FOCUS, demo["dietary_focus"]))
-        preparation_complexity = st.selectbox("Preparation complexity", ["Low", "Medium", "High"], index=option_index(["Low", "Medium", "High"], demo["complexity"]))
-        language = st.selectbox("Output language", ["English", "Italian"], index=0)
+        business_display_options = display_options(BUSINESS_TYPES, language)
+        business_type_display = st.selectbox(
+            T["business_type"],
+            business_display_options,
+            index=option_index(BUSINESS_TYPES, demo["business_type"]),
+        )
+        business_type = reverse_tr(business_type_display, language)
+
+        location = st.text_input(T["location"], value=demo["location"])
+
+        customer_display_options = display_options(CUSTOMER_SEGMENTS, language)
+        customer_segment_display = st.selectbox(
+            T["customer_segment"],
+            customer_display_options,
+            index=option_index(CUSTOMER_SEGMENTS, demo["customer_segment"]),
+        )
+        customer_segment = reverse_tr(customer_segment_display, language)
+
+        dietary_display_options = display_options(DIETARY_FOCUS, language)
+        dietary_focus_display = st.selectbox(
+            T["dietary_focus"],
+            dietary_display_options,
+            index=option_index(DIETARY_FOCUS, demo["dietary_focus"]),
+        )
+        dietary_focus = reverse_tr(dietary_focus_display, language)
+
+        complexity_options = ["Low", "Medium", "High"]
+        complexity_display_options = display_options(complexity_options, language)
+        preparation_complexity_display = st.selectbox(
+            T["complexity"],
+            complexity_display_options,
+            index=option_index(complexity_options, demo["complexity"]),
+        )
+        preparation_complexity = reverse_tr(preparation_complexity_display, language)
+
+        output_language_options = ["English", "Italian"]
+        output_language_display_options = display_options(output_language_options, language)
+
+        output_language_display = st.selectbox(
+            T["output_language"],
+            output_language_display_options,
+            index=option_index(output_language_options, language),
+        )
+
+        output_language = reverse_tr(output_language_display, language)
 
 
-run_clicked = st.button("Run MenuTaste Agent", type="primary")
+run_clicked = st.button(T["run"], type="primary")
 
 if run_clicked:
     ingredients = clean_ingredients(raw_ingredients)
 
     if not ingredients:
-        st.error("Please add at least one ingredient.")
+        st.error(T["validation_ingredients"])
         st.stop()
 
     try:
@@ -628,56 +890,50 @@ if run_clicked:
             dietary_focus=dietary_focus,
             target_price_eur=target_price,
             preparation_complexity=preparation_complexity,
-            language=language,
+            language=output_language,
         )
     except ValidationError as exc:
-        st.error("Please fix the product input before running the agent.")
+        st.error(T["validation_input"])
         st.code(str(exc))
         st.stop()
 
-    with st.spinner("Running MenuTaste reasoning workflow..."):
+    with st.spinner("Running MenuTaste reasoning workflow..." if language == "English" else "Esecuzione del workflow MenuTaste..."):
         report = run_menutaste_agent(product)
 
-    st.markdown('<div class="success-box">MenuTaste report generated.</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="success-box">{T["report_generated"]}</div>', unsafe_allow_html=True)
 
-    score_items = [
-        ("Overall", report.scores.overall_score),
-        ("Nutrition", report.scores.nutrition_score),
-        ("Quality", report.scores.quality_score),
-        ("Market Fit", report.scores.market_fit_score),
-        ("Operations", report.scores.operational_score),
+    score_values = [
+        report.scores.overall_score,
+        report.scores.nutrition_score,
+        report.scores.quality_score,
+        report.scores.market_fit_score,
+        report.scores.operational_score,
     ]
 
     score_cols = st.columns(5)
-    for col, (label, value) in zip(score_cols, score_items):
+    for col, label, value in zip(score_cols, T["scores"], score_values):
         with col:
-            render_score_card(label, value)
+            render_score_card(label, value, language)
 
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
-        "Summary",
-        "Nutrition & Risks",
-        "Featherless Reasoning",
-        "Recommendations",
-        "Export",
-    ])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(T["tabs"])
 
     with tab1:
-        st.subheader("Executive Summary")
-        render_info_card("Business-ready summary", report.executive_summary)
+        st.subheader(T["summary_title"])
+        render_info_card(T["summary_card"], report.executive_summary)
 
-        st.subheader("Product Positioning")
-        render_info_card("Suggested market message", report.positioning)
+        st.subheader(T["positioning_title"])
+        render_info_card(T["positioning_card"], report.positioning)
 
         c1, c2, c3 = st.columns(3)
         with c1:
-            render_small_card("Business type", report.product.business_type)
+            render_small_card(T["business_type_card"], localized_value(report.product.business_type, language))
         with c2:
-            render_small_card("Target customer", report.product.customer_segment)
+            render_small_card(T["target_customer_card"], localized_value(report.product.customer_segment, language))
         with c3:
-            render_small_card("Target price", f"EUR {report.product.target_price_eur:.2f}")
+            render_small_card(T["target_price_card"], f"EUR {report.product.target_price_eur:.2f}")
 
     with tab2:
-        st.subheader("Nutrition Estimate")
+        st.subheader(T["nutrition_title"])
 
         nutrition_items = {
             "Protein": report.nutrition.protein_level,
@@ -692,16 +948,16 @@ if run_clicked:
         n_cols = st.columns(4)
         for idx, (label, value) in enumerate(nutrition_items.items()):
             with n_cols[idx % 4]:
-                render_small_card(label, value)
+                render_small_card(localized_value(label, language), localized_value(value, language))
 
-        st.subheader("Risk Review")
-        risk_items = {
-            "Allergens": ", ".join(report.risks.allergen_risks),
-            "Dietary conflicts": ", ".join(report.risks.dietary_conflicts),
-            "Quality risks": ", ".join(report.risks.quality_risks),
-            "Operational risks": ", ".join(report.risks.operational_risks),
-        }
-        for label, value in risk_items.items():
+        st.subheader(T["risk_title"])
+        risk_values = [
+            ", ".join(report.risks.allergen_risks),
+            ", ".join(report.risks.dietary_conflicts),
+            ", ".join(report.risks.quality_risks),
+            ", ".join(report.risks.operational_risks),
+        ]
+        for label, value in zip(T["risk_labels"], risk_values):
             st.markdown(
                 f"""
                 <div class="risk-box">
@@ -711,21 +967,21 @@ if run_clicked:
                 unsafe_allow_html=True,
             )
 
-        st.subheader("Ingredient Notes")
+        st.subheader(T["ingredient_notes"])
         for ingredient, note in report.ingredient_notes.items():
             render_info_card(ingredient.title(), note)
 
     with tab3:
-        st.subheader("Featherless AI Reasoning")
-        st.caption("This section is generated from the structured prompt sent to the Featherless model.")
+        st.subheader(T["ai_title"])
+        st.caption(T["ai_caption"])
         st.markdown(report.ai_reasoning)
 
     with tab4:
-        st.subheader("Recommended Actions")
+        st.subheader(T["actions_title"])
         for idx, rec in enumerate(report.recommendations, start=1):
-            render_info_card(f"Action {idx}", rec)
+            render_info_card(f"{T['action']} {idx}", rec)
 
-        st.subheader("Launch Checklist")
+        st.subheader(T["checklist_title"])
         for idx, item in enumerate(report.launch_checklist):
             st.checkbox(item, value=False, key=f"launch_{idx}_{item}")
 
@@ -733,32 +989,31 @@ if run_clicked:
         markdown_report = report_to_markdown(report)
         json_report = report_to_json(report)
 
-        st.subheader("Export Report")
+        st.subheader(T["export_title"])
         e1, e2 = st.columns(2)
         with e1:
             st.download_button(
-                "Download Markdown Report",
+                T["download_md"],
                 markdown_report,
                 file_name="menutaste_report.md",
                 mime="text/markdown",
             )
         with e2:
             st.download_button(
-                "Download JSON Report",
+                T["download_json"],
                 json_report,
                 file_name="menutaste_report.json",
                 mime="application/json",
             )
 
-        st.subheader("Markdown Preview")
-        st.text_area("Report content", markdown_report, height=420, label_visibility="collapsed")
+        st.subheader(T["markdown_preview"])
+        st.text_area(T["report_content"], markdown_report, height=420, label_visibility="collapsed")
 else:
     st.markdown(
-        """
+        f"""
         <div class="section-box">
-            <b>Ready to run.</b><br>
-            Choose a demo scenario, edit the details, and click <b>Run MenuTaste Agent</b>.
-            The app will combine local scoring with Featherless model reasoning.
+            <b>{T["ready_title"]}</b><br>
+            {T["ready_body"]}
         </div>
         """,
         unsafe_allow_html=True,
