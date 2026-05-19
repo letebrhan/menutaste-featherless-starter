@@ -339,10 +339,25 @@ def render_info_card(title: str, body: str) -> None:
     )
 
 
+def get_app_setting(name: str, default: str = "") -> str:
+    env_value = os.getenv(name)
+    if env_value is not None and str(env_value).strip():
+        return str(env_value)
+
+    try:
+        value = st.secrets.get(name)
+        if value is not None and str(value).strip():
+            return str(value)
+    except Exception:
+        pass
+
+    return default
+
+
 def featherless_status() -> str:
-    if os.getenv("USE_FEATHERLESS", "true").lower() not in {"1", "true", "yes"}:
+    if get_app_setting("USE_FEATHERLESS", "true").lower() not in {"1", "true", "yes"}:
         return "Disabled"
-    if not os.getenv("FEATHERLESS_API_KEY"):
+    if not get_app_setting("FEATHERLESS_API_KEY"):
         return "Missing API key"
     return "Connected"
 
