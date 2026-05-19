@@ -36,8 +36,6 @@ def get_setting(name: str, default: str = "") -> str:
         return str(env_value)
 
     try:
-        import streamlit as st
-
         value = st.secrets.get(name)
         if value is not None and str(value).strip():
             return str(value)
