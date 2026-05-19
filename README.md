@@ -33,7 +33,7 @@ The app supports Featherless through an OpenAI-compatible client.
 Default model:
 
 ```text
-Qwen/Qwen2.5-7B-Instruct
+deepseek-ai/DeepSeek-V3-0324
 ```
 
 You can change it in `.env`.
@@ -54,7 +54,7 @@ streamlit run app.py
 
 ```bash
 FEATHERLESS_API_KEY=your_key_here
-FEATHERLESS_MODEL=Qwen/Qwen2.5-7B-Instruct
+FEATHERLESS_MODEL=deepseek-ai/DeepSeek-V3-0324
 FEATHERLESS_BASE_URL=https://api.featherless.ai/v1
 USE_FEATHERLESS=true
 ```

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import os
 
+import streamlit as st
 from openai import OpenAI
 
 
@@ -29,14 +30,31 @@ Rules:
 """
 
 
+def get_setting(name: str, default: str = "") -> str:
+    try:
+        value = st.secrets.get(name)
+        if value is not None and str(value).strip():
+            return str(value)
+    except Exception:
+        pass
+
+    return os.getenv(name, default)
+
+
 def featherless_enabled() -> bool:
-    return os.getenv("USE_FEATHERLESS", "true").lower() in {"1", "true", "yes"} and bool(os.getenv("FEATHERLESS_API_KEY"))
+    use_featherless = get_setting("USE_FEATHERLESS", "true").lower() in {
+        "1",
+        "true",
+        "yes",
+    }
+    api_key = get_setting("FEATHERLESS_API_KEY", "")
+    return use_featherless and bool(api_key)
 
 
 def get_client() -> OpenAI:
     return OpenAI(
-        base_url=os.getenv("FEATHERLESS_BASE_URL", "https://api.featherless.ai/v1"),
-        api_key=os.environ["FEATHERLESS_API_KEY"],
+        base_url=get_setting("FEATHERLESS_BASE_URL", "https://api.featherless.ai/v1"),
+        api_key=get_setting("FEATHERLESS_API_KEY"),
     )
 
 
@@ -62,7 +80,11 @@ def _section_titles(output_language: str) -> str:
 """
 
 
-def generate_ai_reasoning(product_summary: str, deterministic_summary: str, output_language: str = "English") -> str:
+def generate_ai_reasoning(
+    product_summary: str,
+    deterministic_summary: str,
+    output_language: str = "English",
+) -> str:
     language = output_language or "English"
     italian = language.lower().startswith("italian")
 
@@ -77,7 +99,7 @@ def generate_ai_reasoning(product_summary: str, deterministic_summary: str, outp
             "Add FEATHERLESS_API_KEY to enable model-generated strategic analysis."
         )
 
-    model = os.getenv("FEATHERLESS_MODEL", "Qwen/Qwen2.5-7B-Instruct")
+    model = get_setting("FEATHERLESS_MODEL", "deepseek-ai/DeepSeek-V3-0324")
     client = get_client()
     section_titles = _section_titles(language)
 
@@ -105,7 +127,11 @@ Per ogni sezione:
 - usa tono professionale, pratico e startup-friendly
 - non inventare calorie o valori nutrizionali esatti
 - fornisci consigli concreti utilizzabili questa settimana
-""".format(product_summary=product_summary, deterministic_summary=deterministic_summary, section_titles=section_titles)
+""".format(
+            product_summary=product_summary,
+            deterministic_summary=deterministic_summary,
+            section_titles=section_titles,
+        )
     else:
         language_rule = """
 MANDATORY LANGUAGE RULE:
@@ -128,7 +154,11 @@ For each section:
 - use a professional, practical, startup-friendly tone
 - do not invent exact calories or nutrition values
 - provide concrete advice the entrepreneur can use this week
-""".format(product_summary=product_summary, deterministic_summary=deterministic_summary, section_titles=section_titles)
+""".format(
+            product_summary=product_summary,
+            deterministic_summary=deterministic_summary,
+            section_titles=section_titles,
+        )
 
     user_prompt = f"{language_rule}\n{detail_instruction}"
 
@@ -142,7 +172,11 @@ For each section:
             temperature=0.2,
             max_tokens=900,
         )
-        return response.choices[0].message.content or ("Nessun ragionamento AI restituito." if italian else "No AI reasoning was returned.")
+        return response.choices[0].message.content or (
+            "Nessun ragionamento AI restituito."
+            if italian
+            else "No AI reasoning was returned."
+        )
     except Exception as exc:
         if italian:
             return (
