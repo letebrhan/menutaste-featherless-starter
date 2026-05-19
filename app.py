@@ -595,9 +595,13 @@ st.markdown(
     }
 
     /* Main run button */
+    div.stButton > button:first-child,
+    div.stButton > button:first-child p {
+        color: white !important;
+    }
+
     div.stButton > button:first-child {
         background: linear-gradient(135deg, #16a34a 0%, #0f766e 100%);
-        color: white;
         border-radius: 16px;
         padding: 0.9rem 1.35rem;
         border: none;
@@ -608,14 +612,17 @@ st.markdown(
 
     div.stButton > button:first-child:hover {
         background: linear-gradient(135deg, #15803d 0%, #0f766e 100%);
-        color: white;
         transform: translateY(-1px);
     }
 
     /* Export download buttons */
+    div.stDownloadButton > button,
+    div.stDownloadButton > button p {
+        color: white !important;
+    }
+
     div.stDownloadButton > button {
         background: #2563eb;
-        color: white;
         border-radius: 14px;
         padding: 0.8rem 1.2rem;
         border: none;
@@ -626,7 +633,6 @@ st.markdown(
 
     div.stDownloadButton > button:hover {
         background: #1d4ed8;
-        color: white;
         transform: translateY(-1px);
     }
 
@@ -693,6 +699,14 @@ st.markdown(
         color: white !important;
     }
 
+    /* Launch checklist text should not be bold */
+    div[data-testid="stCheckbox"] label,
+    div[data-testid="stCheckbox"] label p,
+    div[data-testid="stCheckbox"] span {
+        font-weight: 500 !important;
+        font-size: clamp(15px, 1vw, 17px) !important;
+        color: #102033 !important;
+    }
 
     /* Responsive captions */
     [data-testid="stCaptionContainer"],
