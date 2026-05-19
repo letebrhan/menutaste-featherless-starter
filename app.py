@@ -97,7 +97,6 @@ UI_TEXT = {
         "customer_segment": "Customer segment",
         "dietary_focus": "Dietary focus",
         "complexity": "Preparation complexity",
-        "output_language": "Output language",
         "run": "Run MenuTaste Agent",
         "report_generated": "MenuTaste report generated.",
         "tabs": ["Summary", "Nutrition & Risks", "Featherless Reasoning", "Recommendations", "Export"],
@@ -161,7 +160,6 @@ UI_TEXT = {
         "customer_segment": "Segmento clienti",
         "dietary_focus": "Focus dietetico",
         "complexity": "Complessità di preparazione",
-        "output_language": "Lingua output",
         "run": "Esegui agente MenuTaste",
         "report_generated": "Report MenuTaste generato.",
         "tabs": ["Riepilogo", "Nutrizione e rischi", "Ragionamento Featherless", "Raccomandazioni", "Export"],
@@ -858,16 +856,6 @@ with st.container():
         )
         preparation_complexity = reverse_tr(preparation_complexity_display, language)
 
-        output_language_options = ["English", "Italian"]
-        output_language_display_options = display_options(output_language_options, language)
-
-        output_language_display = st.selectbox(
-            T["output_language"],
-            output_language_display_options,
-            index=option_index(output_language_options, language),
-        )
-
-        output_language = reverse_tr(output_language_display, language)
 
 
 run_clicked = st.button(T["run"], type="primary")
@@ -890,7 +878,6 @@ if run_clicked:
             dietary_focus=dietary_focus,
             target_price_eur=target_price,
             preparation_complexity=preparation_complexity,
-            language=output_language,
         )
     except ValidationError as exc:
         st.error(T["validation_input"])
