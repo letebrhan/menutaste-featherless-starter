@@ -642,7 +642,7 @@ st.markdown(
         border-bottom: 1px solid #cbd5e1 !important;
         overflow-x: auto !important;
         flex-wrap: nowrap !important;
-        padding-bottom: 0 !important;
+        padding-bottom: 2px !important;
     }
 
     /* Inactive tabs */
@@ -654,8 +654,6 @@ st.markdown(
         font-weight: 800 !important;
         white-space: nowrap !important;
         min-width: fit-content !important;
-        border: 1px solid #c7d8ea !important;
-        border-bottom: none !important;
     }
 
     /* Inactive tab text */
@@ -767,28 +765,6 @@ st.markdown(
         }
     }
 
-    /* Softer page scrollbar */
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: #eef5ee;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #b8c7bd;
-        border-radius: 999px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #8fa39a;
-    }
-
-    html {
-        scrollbar-color: #b8c7bd #eef5ee;
-        scrollbar-width: thin;
-    }
 
     div[data-testid="stTextInput"] input,
     div[data-testid="stNumberInput"] input,
@@ -936,6 +912,12 @@ with st.container():
 
 
 
+if "menutaste_report" not in st.session_state:
+    st.session_state["menutaste_report"] = None
+
+if "menutaste_report_language" not in st.session_state:
+    st.session_state["menutaste_report_language"] = language
+
 run_clicked = st.button(T["run"], type="primary")
 
 if run_clicked:
@@ -943,6 +925,14 @@ if run_clicked:
 
     if not ingredients:
         st.error(T["validation_ingredients"])
+        st.stop()
+
+    if not customer_segment:
+        st.error("Please select at least one customer segment." if language == "English" else "Seleziona almeno un segmento clienti.")
+        st.stop()
+
+    if not dietary_focus:
+        st.error("Please select at least one dietary focus." if language == "English" else "Seleziona almeno un focus dietetico.")
         st.stop()
 
     try:
@@ -964,8 +954,12 @@ if run_clicked:
         st.stop()
 
     with st.spinner("Running MenuTaste reasoning workflow..." if language == "English" else "Esecuzione del workflow MenuTaste..."):
-        report = run_menutaste_agent(product)
+        st.session_state["menutaste_report"] = run_menutaste_agent(product)
+        st.session_state["menutaste_report_language"] = language
 
+report = st.session_state.get("menutaste_report")
+
+if report is not None:
     st.markdown(f'<div class="success-box">{T["report_generated"]}</div>', unsafe_allow_html=True)
 
     score_values = [
@@ -994,9 +988,12 @@ if run_clicked:
         with c1:
             render_small_card(T["business_type_card"], localized_value(report.product.business_type, language))
         with c2:
+            customer_value = report.product.customer_segment
+            if isinstance(customer_value, str):
+                customer_value = [customer_value]
             render_small_card(
                 T["target_customer_card"],
-                ", ".join(localized_value(item, language) for item in report.product.customer_segment),
+                ", ".join(localized_value(item, language) for item in customer_value),
             )
         with c3:
             render_small_card(T["target_price_card"], f"EUR {report.product.target_price_eur:.2f}")
@@ -1066,6 +1063,7 @@ if run_clicked:
                 markdown_report,
                 file_name="menutaste_report.md",
                 mime="text/markdown",
+                key="download_markdown_report",
             )
         with e2:
             st.download_button(
@@ -1073,10 +1071,11 @@ if run_clicked:
                 json_report,
                 file_name="menutaste_report.json",
                 mime="application/json",
+                key="download_json_report",
             )
 
         st.subheader(T["markdown_preview"])
-        st.text_area(T["report_content"], markdown_report, height=420, label_visibility="collapsed")
+        st.text_area(T["report_content"], markdown_report, height=420, label_visibility="collapsed", key="markdown_preview_area")
 else:
     st.markdown(
         f"""
