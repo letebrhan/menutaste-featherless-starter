@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from typing import Dict, List
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class ProductInput(BaseModel):
@@ -10,11 +10,18 @@ class ProductInput(BaseModel):
     ingredients: List[str] = Field(..., min_length=1)
     business_type: str
     location: str = Field(..., min_length=2)
-    customer_segment: str
-    dietary_focus: str
+    customer_segment: List[str] = Field(..., min_length=1)
+    dietary_focus: List[str] = Field(..., min_length=1)
     target_price_eur: float = Field(..., gt=0)
     preparation_complexity: str = "Medium"
     language: str = "English"
+
+    @field_validator("customer_segment", "dietary_focus", mode="before")
+    @classmethod
+    def normalize_multi_select(cls, value):
+        if isinstance(value, str):
+            return [value]
+        return value
 
 
 class NutritionEstimate(BaseModel):

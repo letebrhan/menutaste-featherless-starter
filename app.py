@@ -907,20 +907,23 @@ with st.container():
         location = st.text_input(T["location"], value=demo["location"])
 
         customer_display_options = display_options(CUSTOMER_SEGMENTS, language)
-        customer_segment_display = st.selectbox(
+        customer_segment_display = st.multiselect(
             T["customer_segment"],
             customer_display_options,
-            index=option_index(CUSTOMER_SEGMENTS, demo["customer_segment"]),
+            default=[tr(demo["customer_segment"], language)],
         )
-        customer_segment = reverse_tr(customer_segment_display, language)
+        customer_segment = [reverse_tr(item, language) for item in customer_segment_display]
 
         dietary_display_options = display_options(DIETARY_FOCUS, language)
-        dietary_focus_display = st.selectbox(
+        dietary_focus_display = st.multiselect(
             T["dietary_focus"],
             dietary_display_options,
-            index=option_index(DIETARY_FOCUS, demo["dietary_focus"]),
+            default=[tr(demo["dietary_focus"], language)],
         )
-        dietary_focus = reverse_tr(dietary_focus_display, language)
+        dietary_focus = [reverse_tr(item, language) for item in dietary_focus_display]
+
+        if len(dietary_focus) > 1 and "None" in dietary_focus:
+            dietary_focus = [item for item in dietary_focus if item != "None"]
 
         complexity_options = ["Low", "Medium", "High"]
         complexity_display_options = display_options(complexity_options, language)
@@ -991,7 +994,10 @@ if run_clicked:
         with c1:
             render_small_card(T["business_type_card"], localized_value(report.product.business_type, language))
         with c2:
-            render_small_card(T["target_customer_card"], localized_value(report.product.customer_segment, language))
+            render_small_card(
+                T["target_customer_card"],
+                ", ".join(localized_value(item, language) for item in report.product.customer_segment),
+            )
         with c3:
             render_small_card(T["target_price_card"], f"EUR {report.product.target_price_eur:.2f}")
 

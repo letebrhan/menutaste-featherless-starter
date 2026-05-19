@@ -45,6 +45,14 @@ def estimate_nutrition(ingredients: List[str]) -> Dict[str, str]:
         "salt_risk": classify_level(counter["salt"]),
     }
 
+def as_list(value):
+    if isinstance(value, list):
+        return value
+    return [value]
+
+
+def has_focus(dietary_focus, target: str) -> bool:
+    return target.lower() in {item.lower() for item in as_list(dietary_focus)}
 
 def calculate_scores(
     ingredients: List[str],
@@ -60,7 +68,7 @@ def calculate_scores(
     allergens = detect_allergens(ingredients)
 
     business = business_type.lower()
-    customer = customer_segment.lower()
+    customer = " ".join(as_list(customer_segment)).lower()
     place = location.lower()
     desc = description.lower()
     joined_ingredients = " ".join(ingredients).lower()
@@ -72,15 +80,15 @@ def calculate_scores(
         nutrition_score += 8
     if nutrition["vitamin_mineral_signal"] in {"Medium", "High"}:
         nutrition_score += 8
-    if dietary_focus == "High protein" and nutrition["protein_level"] == "High":
+    if has_focus(dietary_focus, "High protein") and nutrition["protein_level"] == "High":
         nutrition_score += 5
-    if dietary_focus == "Low sugar" and nutrition["sugar_risk"] == "Low":
+    if has_focus(dietary_focus, "Low sugar") and nutrition["sugar_risk"] == "Low":
         nutrition_score += 5
     if nutrition["sugar_risk"] == "High":
         nutrition_score -= 12
     if nutrition["salt_risk"] == "High":
         nutrition_score -= 8
-    if dietary_focus == "Low sugar" and any(x in joined_ingredients for x in ["sugar", "honey"]):
+    if has_focus(dietary_focus, "Low sugar") and any(x in joined_ingredients for x in ["sugar", "honey"]):
         nutrition_score -= 8
 
     quality_score = 70
@@ -98,7 +106,7 @@ def calculate_scores(
         quality_score -= 5
 
     market_fit_score = 65
-    if dietary_focus != "None":
+    if not has_focus(dietary_focus, "None"):
         market_fit_score += 10
     if target_price_eur <= 8:
         market_fit_score += 6
@@ -113,7 +121,7 @@ def calculate_scores(
         market_fit_score += 4
     if "student" in customer and target_price_eur > 8:
         market_fit_score -= 5
-    if "fitness" in customer and dietary_focus in {"High protein", "Low sugar", "Vegan"}:
+    if "fitness" in customer and any(has_focus(dietary_focus, item) for item in {"High protein", "Low sugar", "Vegan"}):
         market_fit_score += 5
     if "premium" in customer and target_price_eur >= 5:
         market_fit_score += 3

@@ -12,6 +12,26 @@ def wants_italian(product: ProductInput) -> bool:
     return product.language.lower().startswith("italian")
 
 
+def as_list(value) -> List[str]:
+    if isinstance(value, list):
+        return value
+    if value is None:
+        return []
+    return [value]
+
+
+def has_value(values, target: str) -> bool:
+    target_lower = target.lower()
+    return any(str(item).lower() == target_lower for item in as_list(values))
+
+
+def join_values(values, language: str = "English") -> str:
+    items = [str(item) for item in as_list(values) if str(item).strip()]
+    if not items:
+        return "Non specificato" if language.lower().startswith("italian") else "Not specified"
+    return ", ".join(items)
+
+
 def build_ingredient_notes(ingredients: List[str], italian: bool = False) -> Dict[str, str]:
     notes = {}
     default_note = (
@@ -60,25 +80,25 @@ def assess_risks(product: ProductInput) -> RiskAssessment:
     italian = wants_italian(product)
     allergens = detect_allergens(product.ingredients)
     joined = " ".join(product.ingredients).lower()
-    focus = product.dietary_focus.lower()
+    dietary_focuses = as_list(product.dietary_focus)
 
     dietary_conflicts = []
-    if focus == "vegan" and any(x in joined for x in ["milk", "cheese", "egg", "chicken", "beef", "fish", "shrimp"]):
+    if has_value(dietary_focuses, "vegan") and any(x in joined for x in ["milk", "cheese", "egg", "chicken", "beef", "fish", "shrimp"]):
         dietary_conflicts.append(
             "L'obiettivo vegano è in conflitto con ingredienti di origine animale."
             if italian else "The vegan focus conflicts with animal-based ingredients."
         )
-    if focus == "vegetarian" and any(x in joined for x in ["chicken", "beef", "fish", "shrimp"]):
+    if has_value(dietary_focuses, "vegetarian") and any(x in joined for x in ["chicken", "beef", "fish", "shrimp"]):
         dietary_conflicts.append(
             "L'obiettivo vegetariano è in conflitto con carne o pesce."
             if italian else "The vegetarian focus conflicts with meat or seafood ingredients."
         )
-    if focus == "gluten-free" and any(x in joined for x in ["wheat", "bread", "pasta"]):
+    if has_value(dietary_focuses, "gluten-free") and any(x in joined for x in ["wheat", "bread", "pasta"]):
         dietary_conflicts.append(
             "L'obiettivo senza glutine è in conflitto con ingredienti che contengono glutine."
             if italian else "The gluten-free focus conflicts with gluten-containing ingredients."
         )
-    if focus == "dairy-free" and any(x in joined for x in ["milk", "cheese", "yogurt", "butter"]):
+    if has_value(dietary_focuses, "dairy-free") and any(x in joined for x in ["milk", "cheese", "yogurt", "butter"]):
         dietary_conflicts.append(
             "L'obiettivo senza latticini è in conflitto con ingredienti lattiero-caseari."
             if italian else "The dairy-free focus conflicts with dairy ingredients."
@@ -138,12 +158,12 @@ def create_positioning(product: ProductInput, score: int) -> str:
     if italian:
         return (
             f"{product.product_name} può essere posizionato come un'offerta {strength} per "
-            f"{product.customer_segment.lower()} a {product.location}. Il messaggio dovrebbe collegare gusto, "
+            f"{join_values(product.customer_segment, product.language).lower()} a {product.location}. Il messaggio dovrebbe collegare gusto, "
             "trasparenza degli ingredienti e valore dietetico chiaro."
         )
     return (
         f"{product.product_name} can be positioned as a {strength} offer for "
-        f"{product.customer_segment.lower()} in {product.location}. The message should connect taste, "
+        f"{join_values(product.customer_segment, product.language).lower()} in {product.location}. The message should connect taste, "
         "ingredient transparency, and clear dietary value."
     )
 
@@ -227,8 +247,8 @@ def run_menutaste_agent(product: ProductInput) -> AgentReport:
         f"Ingredients: {', '.join(product.ingredients)}\n"
         f"Business type: {product.business_type}\n"
         f"Location: {product.location}\n"
-        f"Customer segment: {product.customer_segment}\n"
-        f"Dietary focus: {product.dietary_focus}\n"
+        f"Customer segment: {join_values(product.customer_segment, product.language)}\n"
+        f"Dietary focus: {join_values(product.dietary_focus, product.language)}\n"
         f"Target price EUR: {product.target_price_eur}\n"
         f"Complexity: {product.preparation_complexity}\n"
         f"Output language: {product.language}"
