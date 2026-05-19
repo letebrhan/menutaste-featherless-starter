@@ -340,20 +340,6 @@ def render_info_card(title: str, body: str) -> None:
 
 
 def get_app_setting(name: str, default: str = "") -> str:
-    env_value = os.getenv(name)
-    if env_value is not None and str(env_value).strip():
-        return str(env_value)
-
-    try:
-        value = st.secrets.get(name)
-        if value is not None and str(value).strip():
-            return str(value)
-    except Exception:
-        pass
-
-    return default
-
-def get_app_setting(name: str, default: str = "") -> str:
     try:
         session_value = st.session_state.get(name)
         if session_value is not None and str(session_value).strip():
@@ -857,7 +843,7 @@ with st.sidebar:
     demo = translated_demo_values(selected_demo, language)
 
     runtime_api_key = st.text_input(
-        "rc_8f17613f81e74cb13d384af21ee041c5da32f1f7f586029ca3077625bae08177",
+        "Featherless API key",
         type="password",
         help="Optional. Used only for this browser session and not saved to GitHub.",
     )
