@@ -767,6 +767,28 @@ st.markdown(
         }
     }
 
+    /* Softer page scrollbar */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #eef5ee;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #b8c7bd;
+        border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #8fa39a;
+    }
+
+    html {
+        scrollbar-color: #b8c7bd #eef5ee;
+        scrollbar-width: thin;
+    }
 
     div[data-testid="stTextInput"] input,
     div[data-testid="stNumberInput"] input,
