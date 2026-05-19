@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-from typing import Optional
 
 from openai import OpenAI
 
@@ -26,6 +25,7 @@ Rules:
 - Be practical for small food businesses, cafes, restaurants, cloud kitchens, and packaged food startups.
 - Focus on actions the entrepreneur can take this week.
 - Keep the answer structured, concise, and useful for a demo.
+- Always respond in the requested output language.
 """
 
 
@@ -40,8 +40,15 @@ def get_client() -> OpenAI:
     )
 
 
-def generate_ai_reasoning(product_summary: str, deterministic_summary: str) -> str:
+def generate_ai_reasoning(product_summary: str, deterministic_summary: str, output_language: str = "English") -> str:
+    language = output_language or "English"
+
     if not featherless_enabled():
+        if language.lower().startswith("italian"):
+            return (
+                "Featherless non è configurato, quindi MenuTaste ha usato solo il ragionamento locale deterministico. "
+                "Aggiungi FEATHERLESS_API_KEY per abilitare l'analisi strategica generata dal modello."
+            )
         return (
             "Featherless is not configured, so MenuTaste used deterministic local reasoning. "
             "Add FEATHERLESS_API_KEY to enable model-generated strategic analysis."
@@ -51,39 +58,42 @@ def generate_ai_reasoning(product_summary: str, deterministic_summary: str) -> s
     client = get_client()
 
     user_prompt = f"""
-    Analyze this food or drink concept as MenuTaste.
+Analyze this food or drink concept as MenuTaste.
 
-    PRODUCT DETAILS
-    {product_summary}
+IMPORTANT LANGUAGE RULE:
+Return the full answer in {language}. Do not mix English and {language}, except for brand names, product names, or technical terms that should remain unchanged.
 
-    LOCAL ANALYSIS RESULTS
-    {deterministic_summary}
+PRODUCT DETAILS
+{product_summary}
 
-    Return exactly these sections:
+LOCAL ANALYSIS RESULTS
+{deterministic_summary}
 
-    1. Product Quality Verdict
-    Give a clear verdict: Strong, Promising, Risky, or Needs Refinement.
+Return exactly these sections in {language}:
 
-    2. Nutrition Positioning
-    Explain the nutrition strengths and weaknesses without giving fake exact values.
+1. Product Quality Verdict
+Give a clear verdict: Strong, Promising, Risky, or Needs Refinement. Translate the verdict label naturally when possible.
 
-    3. Taste and Customer Appeal
-    Explain why customers may or may not like it.
+2. Nutrition Positioning
+Explain the nutrition strengths and weaknesses without giving fake exact values.
 
-    4. Risk Review
-    Mention allergen, dietary, sugar, salt, and operational risks.
+3. Taste and Customer Appeal
+Explain why customers may or may not like it.
 
-    5. Market Positioning
-    Explain the best target customer and selling message.
+4. Risk Review
+Mention allergen, dietary, sugar, salt, and operational risks.
 
-    6. Improvement Actions
-    Give 5 concrete improvements.
+5. Market Positioning
+Explain the best target customer and selling message.
 
-    7. Launch Test
-    Give one simple test the entrepreneur can run in 7 days.
+6. Improvement Actions
+Give 5 concrete improvements.
 
-    Keep the tone professional, practical, and startup-friendly.
-    """
+7. Launch Test
+Give one simple test the entrepreneur can run in 7 days.
+
+Keep the tone professional, practical, and startup-friendly.
+"""
 
     try:
         response = client.chat.completions.create(
@@ -93,10 +103,15 @@ def generate_ai_reasoning(product_summary: str, deterministic_summary: str) -> s
                 {"role": "user", "content": user_prompt},
             ],
             temperature=0.3,
-            max_tokens=700,
+            max_tokens=900,
         )
         return response.choices[0].message.content or "No AI reasoning was returned."
     except Exception as exc:
+        if language.lower().startswith("italian"):
+            return (
+                "La chiamata a Featherless non è riuscita, quindi MenuTaste ha usato solo il ragionamento locale. "
+                f"Errore: {type(exc).__name__}: {exc}"
+            )
         return (
             "Featherless call failed, so MenuTaste used local reasoning only. "
             f"Error: {type(exc).__name__}: {exc}"
