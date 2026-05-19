@@ -25,7 +25,7 @@ Rules:
 - Be practical for small food businesses, cafes, restaurants, cloud kitchens, and packaged food startups.
 - Focus on actions the entrepreneur can take this week.
 - Keep the answer structured, concise, and useful for a demo.
-- Always respond in the requested output language.
+- Always respond only in the requested output language.
 """
 
 
@@ -40,13 +40,36 @@ def get_client() -> OpenAI:
     )
 
 
+def _section_titles(output_language: str) -> str:
+    if output_language.lower().startswith("italian"):
+        return """
+1. Verdetto sulla qualita del prodotto
+2. Posizionamento nutrizionale
+3. Gusto e interesse dei clienti
+4. Revisione dei rischi
+5. Posizionamento di mercato
+6. Azioni di miglioramento
+7. Test di lancio
+"""
+    return """
+1. Product Quality Verdict
+2. Nutrition Positioning
+3. Taste and Customer Appeal
+4. Risk Review
+5. Market Positioning
+6. Improvement Actions
+7. Launch Test
+"""
+
+
 def generate_ai_reasoning(product_summary: str, deterministic_summary: str, output_language: str = "English") -> str:
     language = output_language or "English"
+    italian = language.lower().startswith("italian")
 
     if not featherless_enabled():
-        if language.lower().startswith("italian"):
+        if italian:
             return (
-                "Featherless non è configurato, quindi MenuTaste ha usato solo il ragionamento locale deterministico. "
+                "Featherless non e configurato, quindi MenuTaste ha usato solo il ragionamento locale deterministico. "
                 "Aggiungi FEATHERLESS_API_KEY per abilitare l'analisi strategica generata dal modello."
             )
         return (
@@ -56,12 +79,41 @@ def generate_ai_reasoning(product_summary: str, deterministic_summary: str, outp
 
     model = os.getenv("FEATHERLESS_MODEL", "Qwen/Qwen2.5-7B-Instruct")
     client = get_client()
+    section_titles = _section_titles(language)
 
-    user_prompt = f"""
+    if italian:
+        language_rule = """
+REGOLA LINGUA OBBLIGATORIA:
+Scrivi tutta la risposta in italiano.
+Non usare titoli di sezione in inglese.
+Traduci anche verdict, rischi, raccomandazioni e test di lancio.
+Puoi lasciare invariati solo brand name, product name o termini tecnici necessari.
+"""
+        detail_instruction = """
+Analizza questo concept food o drink come MenuTaste.
+
+DETTAGLI PRODOTTO
+{product_summary}
+
+RISULTATI ANALISI LOCALE
+{deterministic_summary}
+
+Restituisci esattamente queste sezioni in italiano:
+{section_titles}
+
+Per ogni sezione:
+- usa tono professionale, pratico e startup-friendly
+- non inventare calorie o valori nutrizionali esatti
+- fornisci consigli concreti utilizzabili questa settimana
+""".format(product_summary=product_summary, deterministic_summary=deterministic_summary, section_titles=section_titles)
+    else:
+        language_rule = """
+MANDATORY LANGUAGE RULE:
+Write the entire response in English.
+Do not mix languages except for brand names, product names, or technical terms that should remain unchanged.
+"""
+        detail_instruction = """
 Analyze this food or drink concept as MenuTaste.
-
-IMPORTANT LANGUAGE RULE:
-Return the full answer in {language}. Do not mix English and {language}, except for brand names, product names, or technical terms that should remain unchanged.
 
 PRODUCT DETAILS
 {product_summary}
@@ -69,31 +121,16 @@ PRODUCT DETAILS
 LOCAL ANALYSIS RESULTS
 {deterministic_summary}
 
-Return exactly these sections in {language}:
+Return exactly these sections in English:
+{section_titles}
 
-1. Product Quality Verdict
-Give a clear verdict: Strong, Promising, Risky, or Needs Refinement. Translate the verdict label naturally when possible.
+For each section:
+- use a professional, practical, startup-friendly tone
+- do not invent exact calories or nutrition values
+- provide concrete advice the entrepreneur can use this week
+""".format(product_summary=product_summary, deterministic_summary=deterministic_summary, section_titles=section_titles)
 
-2. Nutrition Positioning
-Explain the nutrition strengths and weaknesses without giving fake exact values.
-
-3. Taste and Customer Appeal
-Explain why customers may or may not like it.
-
-4. Risk Review
-Mention allergen, dietary, sugar, salt, and operational risks.
-
-5. Market Positioning
-Explain the best target customer and selling message.
-
-6. Improvement Actions
-Give 5 concrete improvements.
-
-7. Launch Test
-Give one simple test the entrepreneur can run in 7 days.
-
-Keep the tone professional, practical, and startup-friendly.
-"""
+    user_prompt = f"{language_rule}\n{detail_instruction}"
 
     try:
         response = client.chat.completions.create(
@@ -102,14 +139,14 @@ Keep the tone professional, practical, and startup-friendly.
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_prompt},
             ],
-            temperature=0.3,
+            temperature=0.2,
             max_tokens=900,
         )
-        return response.choices[0].message.content or "No AI reasoning was returned."
+        return response.choices[0].message.content or ("Nessun ragionamento AI restituito." if italian else "No AI reasoning was returned.")
     except Exception as exc:
-        if language.lower().startswith("italian"):
+        if italian:
             return (
-                "La chiamata a Featherless non è riuscita, quindi MenuTaste ha usato solo il ragionamento locale. "
+                "La chiamata a Featherless non e riuscita, quindi MenuTaste ha usato solo il ragionamento locale. "
                 f"Errore: {type(exc).__name__}: {exc}"
             )
         return (

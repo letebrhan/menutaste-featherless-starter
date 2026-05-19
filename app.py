@@ -519,7 +519,7 @@ st.markdown(
     }
 
     .score-value {
-        font-size: clamp(28px, 3vw, 39px);
+        font-size: clamp(25px, 3vw, 36px);
         font-weight: 900;
         color: #020617;
         letter-spacing: -0.055em;
@@ -878,6 +878,7 @@ if run_clicked:
             dietary_focus=dietary_focus,
             target_price_eur=target_price,
             preparation_complexity=preparation_complexity,
+            language=language,
         )
     except ValidationError as exc:
         st.error(T["validation_input"])
